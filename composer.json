@@ -1,0 +1,15 @@
+{
+    "name": "trishul/id-card-generator",
+    "description": "Premium ID Card Generator with Bulk Upload",
+    "type": "project",
+    "require": {
+        "php": ">=7.4",
+        "ext-gd": "*",
+        "ext-zip": "*"
+    },
+    "authors": [
+        {
+            "name": "Antigravity AI"
+        }
+    ]
+}

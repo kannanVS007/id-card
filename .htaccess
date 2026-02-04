@@ -1,0 +1,15 @@
+# Increase upload limits (if server allows)
+php_value upload_max_filesize 64M
+php_value post_max_size 64M
+php_value max_execution_time 300
+php_value memory_limit 128M
+
+# Disable directory listing
+Options -Indexes
+
+# Custom folder protection
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    # Prevent direct access to temporary photos folder
+    RewriteRule ^uploads/photos/(.*)$ index.php [L,R=301]
+</IfModule>
