@@ -1,8 +1,26 @@
 <?php
 require_once 'config.php';
 
-if (!isset($_SESSION['authenticated']) || $_SESSION['authenticated'] !== true) {
+// ===============================
+// LOGIN CHECK
+// ===============================
+if (!isset($_SESSION['user_id'])) {
     header('Location: login.php');
     exit;
 }
-?>
+
+// ===============================
+// ROLE HELPERS
+// ===============================
+function isAdmin()
+{
+    return isset($_SESSION['role']) && $_SESSION['role'] === 'admin';
+}
+
+function requireAdmin()
+{
+    if (!isAdmin()) {
+        header('Location: index.php?error=unauthorized');
+        exit;
+    }
+}

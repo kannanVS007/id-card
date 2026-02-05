@@ -1,33 +1,22 @@
 <?php require_once 'auth_check.php'; ?>
 <?php
-// ...
 
 // Function to read Excel/CSV file
 function readExcelFile($filePath) {
     $ext = strtolower(pathinfo($filePath, PATHINFO_EXTENSION));
-    
-    if ($ext == 'csv') {
-        return readCSV($filePath);
-    } else {
-        // Since we don't have an XLSX library, we must assume it's a CSV or tell user to use CSV
-        return readCSV($filePath);
-    }
+    return readCSV($filePath);
 }
 
 function readCSV($filePath) {
     $students = [];
-    
     if (($handle = fopen($filePath, "r")) !== FALSE) {
         $headers = fgetcsv($handle, 1000, ",");
         if (!$headers) return [];
 
-        // Clean headers (remove BOM, trim whitespace)
         $headers = array_map(function($h) {
             return strtolower(trim(preg_replace('/[\x00-\x1F\x80-\xFF]/', '', $h)));
         }, $headers);
         
-        // Dynamic column mapping based on screenshot
-        // User's columns: name, grade, dob, fname, mob, add, bg
         $idx = [
             'name'  => array_search('name', $headers),
             'class' => array_search('grade', $headers) !== false ? array_search('grade', $headers) : array_search('class', $headers),
@@ -39,11 +28,8 @@ function readCSV($filePath) {
         ];
 
         while (($data = fgetcsv($handle, 1000, ",")) !== FALSE) {
-            // Check if we have at least student name and mobile
             if ($idx['name'] !== false && isset($data[$idx['name']])) {
-                
                 $mobile = isset($data[$idx['mob']]) ? $data[$idx['mob']] : '';
-                // Extract 10 digit mobile if possible
                 preg_match('/(\d{10})/', $mobile, $matches);
                 $primaryMob = $matches[1] ?? trim($mobile);
                 
@@ -60,11 +46,9 @@ function readCSV($filePath) {
         }
         fclose($handle);
     }
-    
     return $students;
 }
 
-// Helper to completely clear a directory
 function clearDirectory($dir) {
     if (!is_dir($dir)) return;
     $files = array_diff(scandir($dir), array('.', '..'));
@@ -74,46 +58,31 @@ function clearDirectory($dir) {
     }
 }
 
-// Improved ZIP extraction: Extracts everything, then flattens all images into the root folder
 function extractPhotos($zipPath, $extractTo) {
     $extractTo = rtrim($extractTo, '/') . '/';
     if (!is_dir($extractTo)) mkdir($extractTo, 0777, true);
-    
     $zip = new ZipArchive;
     if ($zip->open($zipPath) === TRUE) {
         $zip->extractTo($extractTo);
         $zip->close();
-        
-        // Flatten all images from subfolders and handle nested ZIPs
         flattenAndExtract($extractTo, $extractTo);
         return true;
     }
     return false;
 }
 
-// Helper to move all images from subfolders to the root and extract nested ZIPs
 function flattenAndExtract($currentDir, $targetRoot) {
     if (!is_dir($currentDir)) return;
     $targetRoot = rtrim($targetRoot, '/') . '/';
-    
     $items = array_diff(scandir($currentDir), array('.', '..'));
     foreach ($items as $item) {
         $path = $currentDir . DIRECTORY_SEPARATOR . $item;
-        
         if (is_dir($path)) {
             flattenAndExtract($path, $targetRoot);
         } else {
             $ext = strtolower(pathinfo($path, PATHINFO_EXTENSION));
             if (in_array($ext, ['jpg', 'jpeg', 'png', 'gif'])) {
-                $newName = basename($path);
-                $destPath = $targetRoot . $newName;
-                if ($path !== $destPath) {
-                    if (file_exists($destPath)) {
-                        $newName = rand(100, 999) . '_' . $newName;
-                        $destPath = $targetRoot . $newName;
-                    }
-                    @rename($path, $destPath);
-                }
+                @rename($path, $targetRoot . basename($path));
             } elseif ($ext === 'zip') {
                 $zip = new ZipArchive;
                 if ($zip->open($path) === TRUE) {
@@ -127,12 +96,10 @@ function flattenAndExtract($currentDir, $targetRoot) {
     }
 }
 
-// Process image (crop and resize)
 function processImage($sourcePath, $destPath) {
     if (!file_exists($sourcePath)) return false;
-    
     list($width, $height, $type) = @getimagesize($sourcePath);
-    if (!$width || !$height) return false;
+    if (!$width) return false;
 
     switch ($type) {
         case IMAGETYPE_JPEG: $img = @imagecreatefromjpeg($sourcePath); break;
@@ -140,18 +107,15 @@ function processImage($sourcePath, $destPath) {
         case IMAGETYPE_GIF:  $img = @imagecreatefromgif($sourcePath); break;
         default: return false;
     }
-
     if (!$img) return false;
 
-    $targetW = 400; 
-    $targetH = 480;
-    
+    $targetW = 300; $targetH = 350;
     $dst = imagecreatetruecolor($targetW, $targetH);
-    imagealphablending($dst, false);
-    imagesavealpha($dst, true);
-    $transparent = imagecolorallocatealpha($dst, 255, 255, 255, 127);
-    imagefill($dst, 0, 0, $transparent);
-
+    if ($type == IMAGETYPE_PNG) {
+        imagealphablending($dst, false);
+        imagesavealpha($dst, true);
+    }
+    
     $srcRatio = $width / $height;
     $targetRatio = $targetW / $targetH;
 
@@ -165,49 +129,47 @@ function processImage($sourcePath, $destPath) {
         imagecopyresampled($dst, $img, 0, 0, 0, $y, $targetW, $targetH, $width, $newH);
     }
 
-    imagejpeg($dst, $destPath, 85);
+    imagejpeg($dst, $destPath, 90);
     imagedestroy($img);
     imagedestroy($dst);
     return true;
 }
 
-// Main processing
 try {
     $uploadDir = 'uploads/';
     $photosDir = 'uploads/photos/';
     $processedDir = 'uploads/processed/';
     
-    foreach ([$uploadDir, $photosDir, $processedDir] as $dir) {
-        if (!is_dir($dir)) mkdir($dir, 0777, true);
-    }
+    foreach ([$uploadDir, $photosDir, $processedDir] as $dir) if (!is_dir($dir)) mkdir($dir, 0777, true);
     
     if (empty($_FILES['excel_file']['tmp_name'])) throw new Exception('Please upload a CSV file');
-    
-    $fileExt = strtolower(pathinfo($_FILES['excel_file']['name'], PATHINFO_EXTENSION));
-    if ($fileExt !== 'csv') throw new Exception('Only .CSV files are supported. Please convert your Excel file.');
-
     $excelPath = $uploadDir . 'data_' . time() . '.csv';
     move_uploaded_file($_FILES['excel_file']['tmp_name'], $excelPath);
     
     if (empty($_FILES['photos_zip']['tmp_name'])) throw new Exception('Please upload photos ZIP file');
-    
     $zipPath = $uploadDir . 'photos_' . time() . '.zip';
     move_uploaded_file($_FILES['photos_zip']['tmp_name'], $zipPath);
     
-    // Clear ALL old photos to avoid conflicts
+    // Logo processing
+    $logoPath = $_SESSION['custom_logo'] ?? 'uploads/logo.png';
+    if (!empty($_FILES['school_logo']['tmp_name'])) {
+        $logoName = 'logo_' . time() . '.png';
+        $logoPath = $uploadDir . $logoName;
+        move_uploaded_file($_FILES['school_logo']['tmp_name'], $logoPath);
+        $_SESSION['custom_logo'] = $logoPath;
+    }
+
+    $academic_year = $_POST['academic_year'] ?? '2025-26';
+    $design_id = $_SESSION['design_id'] ?? 1;
+
     clearDirectory($photosDir);
     clearDirectory($processedDir);
-    
     if (!extractPhotos($zipPath, $photosDir)) throw new Exception('Failed to extract photos');
     
     $students = readExcelFile($excelPath);
-    if (empty($students)) throw new Exception('No valid student data found in CSV.');
-    
-    // Refresh files list after flattening
     $allFiles = array_diff(scandir($photosDir), array('.', '..'));
     $imageFiles = array_values(array_filter($allFiles, function($f) use ($photosDir) {
-        $ext = strtolower(pathinfo($f, PATHINFO_EXTENSION));
-        return in_array($ext, ['jpg', 'jpeg', 'png', 'gif']) && !is_dir($photosDir . $f);
+        return !is_dir($photosDir . $f);
     }));
     natsort($imageFiles);
     $imageFiles = array_values($imageFiles);
@@ -216,39 +178,15 @@ try {
     foreach ($students as $studentIdx => $student) {
         $photoPath = '';
         $cleanMob = trim($student['mobile']);
-        $studentNameClean = strtolower(preg_replace('/[^a-z0-9]/', '', $student['name']));
-        
         $foundFile = '';
-        // 1. Mobile Match
         foreach ($allFiles as $file) {
-            if (!empty($cleanMob) && strpos($file, $cleanMob) === 0 && !is_dir($photosDir . $file)) {
-                $foundFile = $file;
-                break;
-            }
+            if (!empty($cleanMob) && strpos($file, $cleanMob) === 0) { $foundFile = $file; break; }
         }
-        
-        // 2. Name Match
-        if (!$foundFile && !empty($studentNameClean)) {
-            foreach ($allFiles as $file) {
-                $fileNameClean = strtolower(preg_replace('/[^a-z0-9]/', '', pathinfo($file, PATHINFO_FILENAME)));
-                if ((strpos($fileNameClean, $studentNameClean) !== false || strpos($studentNameClean, $fileNameClean) !== false) && !is_dir($photosDir . $file)) {
-                    $foundFile = $file;
-                    break;
-                }
-            }
-        }
-
-        // 3. Sequential Fallback
-        if (!$foundFile && isset($imageFiles[$studentIdx])) {
-            $foundFile = $imageFiles[$studentIdx];
-        }
+        if (!$foundFile && isset($imageFiles[$studentIdx])) $foundFile = $imageFiles[$studentIdx];
         
         if ($foundFile) {
-            $sourcePath = $photosDir . $foundFile;
             $destPath = $processedDir . 'p_' . $studentIdx . '_' . md5($foundFile) . '.jpg';
-            if (processImage($sourcePath, $destPath)) {
-                $photoPath = $destPath;
-            }
+            if (processImage($photosDir . $foundFile, $destPath)) $photoPath = $destPath;
         }
         
         $processedStudents[] = [
@@ -260,12 +198,28 @@ try {
             'address' => $student['address'],
             'class'   => strtoupper($student['class']),
             'photo'   => $photoPath ?: 'offline_placeholder',
-            'year'    => '2025-26'
+            'logo'    => $logoPath,
+            'year'    => $academic_year,
+            'design_id' => $design_id
         ];
     }
     
+    // Log to Database
+    $total = count($processedStudents);
+    try {
+        $stmt = $pdo->prepare("INSERT INTO id_generations (user_id, mode, design_id, logo_path, total_cards, academic_year) VALUES (?, 'bulk', ?, ?, ?, ?)");
+        $stmt->execute([$_SESSION['user_id'], $design_id, $logoPath, $total, $academic_year]);
+    } catch (Exception $e) {}
+
+    // Email Alert
+    $userName = $_SESSION['username'];
+    $to = ADMIN_EMAIL;
+    $subject = "ID Cards Generated - Bulk - $userName";
+    $message = "User: $userName\nMode: Bulk\nTotal: $total\nDesign: $design_id\nYear: $academic_year\nDate: " . date('Y-m-d H:i:s');
+    @mail($to, $subject, $message, "From: noreply@littlekrish.com");
+
     $_SESSION['bulk_students'] = $processedStudents;
-    $_SESSION['success'] = count($processedStudents) . ' ID cards generated successfully!';
+    $_SESSION['success'] = $total . ' ID cards generated successfully!';
     header("Location: view_bulk.php");
     exit;
 } catch (Exception $e) {
