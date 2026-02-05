@@ -58,6 +58,9 @@ $design_id = $_SESSION['design_id'];
                 <?php if (isAdmin()): ?>
                     <a href="admin_dashboard.php" class="text-xs font-bold bg-blue-600 text-white px-4 py-2 rounded-lg">Admin Panel</a>
                 <?php endif; ?>
+                <?php if (isset($_SESSION['is_premium']) && $_SESSION['is_premium']): ?>
+                    <a href="premium_dashboard.php" class="text-xs font-bold bg-teal-600 text-white px-4 py-2 rounded-lg shadow-lg shadow-teal-500/20">Premium Designer</a>
+                <?php endif; ?>
                 <a href="design_showcase.php" class="text-xs font-bold bg-white/10 text-white px-4 py-2 rounded-lg border border-white/10">Change Design</a>
                 <a href="logout.php" class="text-xs font-semibold bg-red-500/10 text-red-400 px-4 py-2 rounded-lg border border-red-500/20">Logout</a>
             </div>

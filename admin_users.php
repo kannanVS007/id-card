@@ -43,9 +43,18 @@ if ($pdo && isset($_GET['action'], $_GET['id'])) {
         $stmt->execute([$userId]);
         logActivity($_SESSION['user_id'], "Deleted user ID {$userId}");
         break;
+
+    case 'toggle_premium':
+        $stmt = $pdo->prepare("UPDATE users SET is_premium = NOT is_premium WHERE id = ?");
+        $stmt->execute([$userId]);
+        logActivity($_SESSION['user_id'], "Toggled premium status for user ID {$userId}");
+        break;
 }
 
 
+        if ($userId === $_SESSION['user_id']) {
+            $_SESSION['is_premium'] = !$_SESSION['is_premium'];
+        }
     header('Location: admin_users.php');
     exit;
 }
@@ -57,7 +66,7 @@ $users = [];
 
 if ($pdo) {
     $stmt = $pdo->query(
-        "SELECT id, username, email, role, status, created_at
+        "SELECT id, username, email, role, status, is_premium, created_at
          FROM users
          ORDER BY created_at DESC"
     );
@@ -141,6 +150,10 @@ if ($pdo) {
                             <?php if ($u['role'] !== 'admin'): ?>
                                 <a href="?action=delete&id=<?= $u['id'] ?>" class="text-red-600 font-bold hover:underline" onclick="return confirm('Really delete?')">Delete</a>
                             <?php endif; ?>
+
+                            <a href="?action=toggle_premium&id=<?= $u['id'] ?>" class="px-3 py-1 rounded-lg text-xs font-bold border <?= $u['is_premium'] ? 'bg-teal-50 text-teal-700 border-teal-200' : 'bg-slate-50 text-slate-400 border-slate-200' ?>">
+                                <?= $u['is_premium'] ? '★ Premium' : '☆ Standard' ?>
+                            </a>
                         </td>
                     </tr>
                     <?php endforeach; ?>

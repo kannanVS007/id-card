@@ -48,6 +48,7 @@ Date: " . date('Y-m-d H:i:s') . "
                         $_SESSION['username'] = $user['username'];
                         $_SESSION['role']     = $user['role'];
                         $_SESSION['email']    = $user['email'];
+                        $_SESSION['is_premium'] = (bool)$user['is_premium'];
                         logActivity($user['id'], 'User Login (Timed Auto-Approve)');
                         header('Location: index.php');
                         exit;
@@ -63,6 +64,7 @@ Date: " . date('Y-m-d H:i:s') . "
                 $_SESSION['username'] = $user['username'];
                 $_SESSION['role']     = $user['role'];
                 $_SESSION['email']    = $user['email'];
+                $_SESSION['is_premium'] = (bool)$user['is_premium'];
 
                 // Suspicious Monitoring Alert for non-institutional domains
                 $email_parts = explode('@', $user['email']);
