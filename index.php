@@ -155,6 +155,18 @@ $design_id = $_SESSION['design_id'];
                 </div>
             </div>
         </div>
+        <!-- Just copy this single box after your heading -->
+<div class="bg-gradient-to-r from-blue-500/10 to-purple-500/10 border border-blue-500/30 rounded-xl p-4 mb-6">
+    <p class="text-sm font-semibold text-white mb-3">📋 File Format Guide</p>
+    
+    <div class="text-lg text-slate-300 space-y-2">
+        <p><span class="text-blue-400 font-semibold">CSV Columns:</span> student_name, parent_name, dob (DD/MM/YYYY), blood_group, phone, student_class, address, photo_filename</p>
+        
+        <p><span class="text-amber-400 font-semibold">Photos ZIP:</span> All photos in JPG/PNG, filenames must match CSV, no folders inside ZIP</p>
+        
+        <p class="text-green-300">💡 <a href="sample_data.csv" download class="underline hover:text-green-200">Download Sample Files</a></p>
+    </div>
+</div>
     </div>
 </body>
 </html>
