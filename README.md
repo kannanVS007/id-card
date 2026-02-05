@@ -1,4 +1,4 @@
-# Little Krish Montessori Pre-School - ID Card Generator System
+ ID Card Generator System
 
 A complete PHP-based ID card generation system that matches your school's exact design and supports both single and bulk student ID card creation.
 
