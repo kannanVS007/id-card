@@ -32,34 +32,49 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         } else {
 
             $hashed_password = password_hash($password, PASSWORD_DEFAULT);
+            $email_parts = explode('@', $email);
+            $domain = end($email_parts);
+            
+            $status = 'pending';
+            $approval_type = 'Timed Auto-Approval (5 min)';
+            
+            if (in_array($domain, TRUSTED_DOMAINS)) {
+                $status = 'active';
+                $approval_type = 'Instant (Trusted Domain)';
+            }
 
             $stmt = $pdo->prepare(
                 "INSERT INTO users (username, email, password, role, status)
-                 VALUES (?, ?, ?, 'user', 'pending')"
+                 VALUES (?, ?, ?, 'user', ?)"
             );
 
-            if ($stmt->execute([$username, $email, $hashed_password])) {
-
+            if ($stmt->execute([$username, $email, $hashed_password, $status])) {
                 $userId = $pdo->lastInsertId();
 
                 // Log activity
-                logActivity($userId, 'New User Registered (Pending Approval)');
+                logActivity($userId, "New User Registered ($status)");
 
                 // Notify admin
-                $subject = "New User Registration - Approval Required";
+                $subject = "New User Registration - $approval_type";
                 $message = "
 New user registered on " . PROJECT_NAME . "
 
 Username: $username
 Email: $email
-Status: Pending Approval
+Status: " . ucfirst($status) . "
+Approval Type: $approval_type
+IP Address: " . ($_SERVER['REMOTE_ADDR'] ?? 'UNKNOWN') . "
 Date: " . date('Y-m-d H:i:s') . "
 
-Please login to admin panel to approve or reject.
+Admin Monitoring: No manual action required unless behavior is suspicious.
 ";
                 @mail(ADMIN_EMAIL, $subject, $message, "From: noreply@littlekrish.com");
 
-                $success = 'Registration successful! Please wait for admin approval.';
+                if ($status === 'active') {
+                    $success = 'Registration successful! Your institutional account is active. You can login now.';
+                } else {
+                    $success = 'Registration successful! Your account is under verification and will be automatically activated within 5 minutes.';
+                }
             } else {
                 $error = 'Registration failed. Please try again.';
             }

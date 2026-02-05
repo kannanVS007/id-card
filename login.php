@@ -2,6 +2,7 @@
 require_once 'config.php';
 
 $error = '';
+$info = ''; // ✅ ADDED
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
@@ -20,7 +21,39 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
             if ($user['status'] !== 'active') {
                 if ($user['status'] === 'pending') {
-                    $error = 'Your account is pending admin approval.';
+                    // Timed Auto-Approval Logic
+                    $regTime = strtotime($user['created_at']);
+                    $now = time();
+                    $diffMinutes = ($now - $regTime) / 60;
+
+                    if ($diffMinutes >= AUTO_APPROVAL_MINUTES) {
+                        // Auto-Approve now
+                        $pdo->prepare("UPDATE users SET status = 'active' WHERE id = ?")->execute([$user['id']]);
+                        
+                        // Notify admin about auto-approval login
+                        $subject = "User Auto-Approved - First Login";
+                        $message = "
+User has been automatically approved after " . AUTO_APPROVAL_MINUTES . " minutes.
+
+Username: " . $user['username'] . "
+Email: " . $user['email'] . "
+Approval Type: Timed Auto-Approval
+IP Address: " . ($_SERVER['REMOTE_ADDR'] ?? 'UNKNOWN') . "
+Date: " . date('Y-m-d H:i:s') . "
+";
+                        @mail(ADMIN_EMAIL, $subject, $message, "From: noreply@littlekrish.com");
+                        
+                        // Proceed to success
+                        $_SESSION['user_id']  = $user['id'];
+                        $_SESSION['username'] = $user['username'];
+                        $_SESSION['role']     = $user['role'];
+                        $_SESSION['email']    = $user['email'];
+                        logActivity($user['id'], 'User Login (Timed Auto-Approve)');
+                        header('Location: index.php');
+                        exit;
+                    } else {
+                        $info = "Your account is under verification and will be automatically activated within 5 minutes. Please try again shortly.";
+                    }
                 } else {
                     $error = 'Your account has been disabled by admin.';
                 }
@@ -30,6 +63,22 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $_SESSION['username'] = $user['username'];
                 $_SESSION['role']     = $user['role'];
                 $_SESSION['email']    = $user['email'];
+
+                // Suspicious Monitoring Alert for non-institutional domains
+                $email_parts = explode('@', $user['email']);
+                $domain = end($email_parts);
+                if (!in_array($domain, TRUSTED_DOMAINS) && $user['role'] !== 'admin') {
+                    $subject = "Suspicious Access Alert - Non-Institutional User";
+                    $message = "
+Non-institutional user logged in. Monitoring recommended.
+
+Username: " . $user['username'] . "
+Email: " . $user['email'] . "
+IP Address: " . ($_SERVER['REMOTE_ADDR'] ?? 'UNKNOWN') . "
+Date: " . date('Y-m-d H:i:s') . "
+";
+                    @mail(ADMIN_EMAIL, $subject, $message, "From: noreply@littlekrish.com");
+                }
 
                 logActivity($user['id'], 'User Login');
 
@@ -80,6 +129,12 @@ body {
         <?php if ($error): ?>
             <div class="bg-red-500/10 border border-red-500 text-red-400 text-sm p-3 rounded-xl mb-4 text-center">
                 <?= htmlspecialchars($error) ?>
+            </div>
+        <?php endif; ?>
+
+        <?php if ($info): ?>
+            <div class="bg-blue-500/10 border border-blue-500 text-blue-400 text-sm p-3 rounded-xl mb-4 text-center">
+                <?= htmlspecialchars($info) ?>
             </div>
         <?php endif; ?>
 

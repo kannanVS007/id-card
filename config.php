@@ -34,8 +34,13 @@ if (session_status() === PHP_SESSION_NONE) {
 // ===============================
 // GLOBAL SETTINGS
 // ===============================
-define('PROJECT_NAME', 'Little Krish ID Generator');
+define('PROJECT_NAME', 'ID Card Generator');
 define('ADMIN_EMAIL', 'vskannan4135@gmail.com');
+define('ADMIN_MOBILE', '6379524135');
+
+// Onboarding Logic Settings
+define('TRUSTED_DOMAINS', ['school.edu', 'institutional.com', 'edu.in', 'ac.in']); // Example domains
+define('AUTO_APPROVAL_MINUTES', 5);
 
 // ===============================
 // ACTIVITY LOG FUNCTION
