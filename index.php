@@ -156,7 +156,7 @@ $design_id = $_SESSION['design_id'];
             </div>
         </div>
         <!-- Just copy this single box after your heading -->
-<div class="bg-gradient-to-r from-blue-500/10 to-purple-500/10 border border-blue-500/30 rounded-xl p-4 mb-6">
+<div class="bg-gradient-to-r from-blue-500/10 to-purple-500/10 border border-blue-500/30 rounded-xl p-4 mb-6 mt-5">
     <p class="text-sm font-semibold text-white mb-3">📋 File Format Guide</p>
     
     <div class="text-lg text-slate-300 space-y-2">
