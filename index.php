@@ -11,165 +11,485 @@ $design_id = $_SESSION['design_id'];
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><?= PROJECT_NAME ?> | Dashboard</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     <style>
-        :root { --primary: #3b82f6; --primary-dark: #2563eb; --accent: #f59e0b; }
+        :root {
+            --primary: #6366f1;
+            --primary-dark: #4f46e5;
+            --accent: #f59e0b;
+            --accent-dark: #d97706;
+            --surface: rgba(30, 41, 59, 0.4);
+        }
+        
+        * {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+        }
+        
         body {
-            font-family: 'Outfit', sans-serif;
-            background-color: #0f172a;
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #0f172a 100%);
             color: #f8fafc;
-            background-image: radial-gradient(at 0% 0%, rgba(59, 130, 246, 0.15) 0px, transparent 50%), radial-gradient(at 100% 100%, rgba(16, 185, 129, 0.1) 0px, transparent 50%);
             min-height: 100vh;
+            position: relative;
+            overflow-x: hidden;
         }
-        .glass-card {
-            background: rgba(30, 41, 59, 0.7);
-            backdrop-filter: blur(12px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: 
+                radial-gradient(circle at 20% 20%, rgba(99, 102, 241, 0.15) 0%, transparent 50%),
+                radial-gradient(circle at 80% 80%, rgba(245, 158, 11, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 50% 50%, rgba(139, 92, 246, 0.08) 0%, transparent 70%);
+            pointer-events: none;
+            z-index: 0;
         }
-        .glass-card:hover { border-color: rgba(255, 255, 255, 0.2); transform: translateY(-4px); }
-        .input-premium {
-            background: rgba(15, 23, 42, 0.6);
-            border: 1px solid rgba(255, 255, 255, 0.1);
+        
+        .content-wrapper {
+            position: relative;
+            z-index: 1;
+        }
+        
+        /* Premium Glass Cards */
+        .glass-premium {
+            background: linear-gradient(135deg, rgba(30, 41, 59, 0.5) 0%, rgba(30, 41, 59, 0.3) 100%);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 
+                0 8px 32px rgba(0, 0, 0, 0.3),
+                inset 0 1px 0 rgba(255, 255, 255, 0.05);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .glass-premium:hover {
+            border-color: rgba(255, 255, 255, 0.15);
+            transform: translateY(-6px);
+            box-shadow: 
+                0 20px 60px rgba(0, 0, 0, 0.4),
+                inset 0 1px 0 rgba(255, 255, 255, 0.1);
+        }
+        
+        /* Premium Inputs */
+        .input-luxury {
+            background: rgba(15, 23, 42, 0.7);
+            border: 1.5px solid rgba(255, 255, 255, 0.08);
             color: white;
-            transition: all 0.2s ease;
+            transition: all 0.3s ease;
+            font-size: 0.9rem;
         }
-        .input-premium:focus { border-color: var(--primary); box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.1); outline: none; }
-        .btn-primary { background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%); }
-        .btn-accent { background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%); }
+        
+        .input-luxury:focus {
+            border-color: var(--primary);
+            background: rgba(15, 23, 42, 0.9);
+            box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.15);
+            outline: none;
+        }
+        
+        .input-luxury::placeholder {
+            color: rgba(148, 163, 184, 0.5);
+        }
+        
+        /* Premium Buttons */
+        .btn-premium {
+            position: relative;
+            overflow: hidden;
+            font-weight: 600;
+            letter-spacing: 0.025em;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-premium::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.5s;
+        }
+        
+        .btn-premium:hover::before {
+            left: 100%;
+        }
+        
+        .btn-primary-gradient {
+            background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 50%, #6366f1 100%);
+            background-size: 200% 200%;
+            animation: gradientShift 3s ease infinite;
+        }
+        
+        .btn-accent-gradient {
+            background: linear-gradient(135deg, #f59e0b 0%, #ef4444 50%, #f59e0b 100%);
+            background-size: 200% 200%;
+            animation: gradientShift 3s ease infinite;
+        }
+        
+        @keyframes gradientShift {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+        
+        .btn-premium:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 40px rgba(99, 102, 241, 0.4);
+        }
+        
+        /* Icon Containers */
+        .icon-box {
+            background: linear-gradient(135deg, rgba(99, 102, 241, 0.2) 0%, rgba(139, 92, 246, 0.1) 100%);
+            border: 1px solid rgba(99, 102, 241, 0.3);
+        }
+        
+        .icon-box-accent {
+            background: linear-gradient(135deg, rgba(245, 158, 11, 0.2) 0%, rgba(239, 68, 68, 0.1) 100%);
+            border: 1px solid rgba(245, 158, 11, 0.3);
+        }
+        
+        /* Navbar Glass Effect */
+        .navbar-glass {
+            background: rgba(15, 23, 42, 0.8);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.3);
+        }
+        
+        /* Badge Styles */
+        .badge-premium {
+            background: linear-gradient(135deg, rgba(99, 102, 241, 0.2) 0%, rgba(139, 92, 246, 0.2) 100%);
+            border: 1px solid rgba(99, 102, 241, 0.4);
+            animation: pulse 2s ease-in-out infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
+        
+        /* File Upload Styling */
+        input[type="file"] {
+            cursor: pointer;
+        }
+        
+        input[type="file"]::file-selector-button {
+            background: linear-gradient(135deg, rgba(99, 102, 241, 0.2) 0%, rgba(139, 92, 246, 0.2) 100%);
+            border: 1px solid rgba(99, 102, 241, 0.3);
+            color: #a5b4fc;
+            padding: 0.5rem 1rem;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            font-weight: 500;
+            margin-right: 1rem;
+            transition: all 0.3s ease;
+        }
+        
+        input[type="file"]::file-selector-button:hover {
+            background: linear-gradient(135deg, rgba(99, 102, 241, 0.3) 0%, rgba(139, 92, 246, 0.3) 100%);
+            border-color: rgba(99, 102, 241, 0.5);
+        }
+        
+        /* Responsive Typography */
+        @media (max-width: 640px) {
+            .hero-title {
+                font-size: 2rem;
+                line-height: 1.2;
+            }
+        }
+        
+        /* Premium Scrollbar */
+        ::-webkit-scrollbar {
+            width: 10px;
+        }
+        
+        ::-webkit-scrollbar-track {
+            background: rgba(15, 23, 42, 0.5);
+        }
+        
+        ::-webkit-scrollbar-thumb {
+            background: linear-gradient(180deg, #6366f1 0%, #8b5cf6 100%);
+            border-radius: 5px;
+        }
+        
+        ::-webkit-scrollbar-thumb:hover {
+            background: linear-gradient(180deg, #8b5cf6 0%, #6366f1 100%);
+        }
+        
+        /* Info Box Animation */
+        .info-box {
+            animation: slideInUp 0.6s ease-out;
+        }
+        
+        @keyframes slideInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
     </style>
 </head>
-<body class="pb-12">
-    <!-- NAVBAR -->
-    <nav class="sticky top-0 z-50 px-6 py-4 bg-slate-900/80 backdrop-blur-md border-b border-white/5">
-        <div class="max-w-7xl mx-auto flex justify-between items-center">
-            <div class="flex items-center gap-3">
-                <div class="w-10 h-10 bg-blue-600 rounded-xl flex items-center justify-center">
-                    <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V8a2 2 0 00-2-2h-5L12 4l-2 2z"></path>
-                    </svg>
-                </div>
-                <div>
-                    <h1 class="text-xl font-bold tracking-tight"><?= PROJECT_NAME ?></h1>
-                    <p class="text-[10px] text-blue-400 font-bold uppercase tracking-widest">Active Design: #<?= $design_id ?></p>
-                </div>
-            </div>
-            <div class="flex items-center gap-4">
-                <?php if (isAdmin()): ?>
-                    <a href="admin_dashboard.php" class="text-xs font-bold bg-blue-600 text-white px-4 py-2 rounded-lg">Admin Panel</a>
-                <?php endif; ?>
-                <?php if (isset($_SESSION['is_premium']) && $_SESSION['is_premium']): ?>
-                    <a href="premium_dashboard.php" class="text-xs font-bold bg-teal-600 text-white px-4 py-2 rounded-lg shadow-lg shadow-teal-500/20">Premium Designer</a>
-                <?php endif; ?>
-                <a href="design_showcase.php" class="text-xs font-bold bg-white/10 text-white px-4 py-2 rounded-lg border border-white/10">Change Design</a>
-                <a href="logout.php" class="text-xs font-semibold bg-red-500/10 text-red-400 px-4 py-2 rounded-lg border border-red-500/20">Logout</a>
-            </div>
-        </div>
-    </nav>
-
-    <div class="max-w-7xl mx-auto px-6 mt-10">
-        <div class="mb-12 text-center sm:text-left flex justify-between items-end">
-            <div>
-                <h2 class="text-4xl sm:text-5xl font-extrabold text-white mb-4">
-                    Ready to <span class="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-teal-400">Generate</span>
-                </h2>
-                <p class="text-slate-400 text-lg max-w-2xl">Create professional ID cards with your selected design.</p>
-            </div>
-            <div class="hidden lg:block">
-                 <div class="bg-blue-600/10 border border-blue-500/20 p-4 rounded-2xl">
-                    <p class="text-[10px] text-blue-400 font-bold uppercase tracking-widest mb-1">Selected Design</p>
-                    <p class="text-white font-bold">Design Style #<?= $design_id ?></p>
-                 </div>
-            </div>
-        </div>
-
-        <div class="grid lg:grid-cols-12 gap-8">
-            <!-- LEFT COLUMN: BULK UPLOAD -->
-            <div class="lg:col-span-5">
-                <div class="glass-card rounded-[2rem] p-8">
-                    <div class="flex items-center gap-4 mb-8">
-                        <div class="p-3 bg-blue-500/10 rounded-2xl">
-                            <svg class="w-6 h-6 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path>
+<body>
+    <div class="content-wrapper">
+        <!-- PREMIUM NAVBAR -->
+        <nav class="navbar-glass sticky top-0 z-50 px-4 sm:px-6 lg:px-8 py-4">
+            <div class="max-w-7xl mx-auto">
+                <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+                    <!-- Logo Section -->
+                    <div class="flex items-center gap-3">
+                        <div class="w-12 h-12 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-2xl flex items-center justify-center shadow-lg shadow-indigo-500/30">
+                            <svg class="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M10 6H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V8a2 2 0 00-2-2h-5L12 4l-2 2z"></path>
                             </svg>
                         </div>
-                        <h3 class="text-xl font-bold text-white">Bulk Processing</h3>
+                        <div>
+                            <h1 class="text-xl sm:text-2xl font-bold tracking-tight bg-gradient-to-r from-white to-slate-300 bg-clip-text text-transparent"><?= PROJECT_NAME ?></h1>
+                            <div class="flex items-center gap-2 mt-1">
+                                <div class="w-2 h-2 rounded-full bg-green-400 animate-pulse"></div>
+                                <p class="text-[10px] text-indigo-400 font-semibold uppercase tracking-wider">Design #<?= $design_id ?></p>
+                            </div>
+                        </div>
                     </div>
+                    
+                    <!-- Navigation Buttons -->
+                    <div class="flex flex-wrap items-center gap-2 sm:gap-3 w-full sm:w-auto">
+                        <?php if (isAdmin()): ?>
+                            <a href="admin_dashboard.php" class="text-xs font-semibold bg-gradient-to-r from-blue-600 to-blue-700 text-white px-4 py-2.5 rounded-xl shadow-lg shadow-blue-600/30 hover:shadow-blue-600/50 transition-all hover:scale-105">
+                                Admin Panel
+                            </a>
+                        <?php endif; ?>
+                        <?php if (isset($_SESSION['is_premium']) && $_SESSION['is_premium']): ?>
+                            <a href="premium_dashboard.php" class="text-xs font-semibold bg-gradient-to-r from-teal-600 to-emerald-600 text-white px-4 py-2.5 rounded-xl shadow-lg shadow-teal-600/30 hover:shadow-teal-600/50 transition-all hover:scale-105">
+                                Premium Designer
+                            </a>
+                        <?php endif; ?>
+                        <a href="design_showcase.php" class="text-xs font-semibold bg-white/10 hover:bg-white/20 text-white px-4 py-2.5 rounded-xl border border-white/10 hover:border-white/20 transition-all backdrop-blur-sm">
+                            Change Design
+                        </a>
+                        <a href="logout.php" class="text-xs font-semibold bg-red-500/10 hover:bg-red-500/20 text-red-400 px-4 py-2.5 rounded-xl border border-red-500/20 hover:border-red-500/30 transition-all">
+                            Logout
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </nav>
 
-                    <form action="process_bulk.php" method="POST" enctype="multipart/form-data" class="space-y-6">
-                        <div>
-                            <label class="block text-sm font-medium text-slate-300 mb-2">School Logo (Optional)</label>
-                            <input type="file" name="school_logo" accept="image/*" class="w-full input-premium rounded-xl p-3 text-sm">
+        <!-- MAIN CONTENT -->
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
+            <!-- Hero Section -->
+            <div class="mb-10 sm:mb-16">
+                <div class="flex flex-col lg:flex-row justify-between items-start lg:items-end gap-6">
+                    <div class="flex-1">
+                        <div class="inline-block mb-4">
+                            <span class="bg-gradient-to-r from-indigo-500/20 to-purple-500/20 border border-indigo-500/30 px-4 py-2 rounded-full text-xs font-semibold text-indigo-300 uppercase tracking-wider">
+                                ID Card Generator
+                            </span>
                         </div>
-                        <div>
-                            <label class="block text-sm font-medium text-slate-300 mb-2">Academic Year</label>
-                            <input type="text" name="academic_year" value="2025-26" class="w-full input-premium rounded-xl p-3 text-sm">
+                        <h2 class="hero-title text-4xl sm:text-5xl lg:text-6xl font-black text-white mb-4 sm:mb-6 leading-tight">
+                            Create Premium
+                            <span class="block text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 via-purple-400 to-pink-400">
+                                ID Cards Instantly
+                            </span>
+                        </h2>
+                        <p class="text-slate-400 text-base sm:text-lg max-w-2xl leading-relaxed">
+                            Professional student ID cards with your selected design template. Single or bulk generation available.
+                        </p>
+                    </div>
+                    
+                    <div class="hidden lg:block">
+                        <div class="badge-premium p-6 rounded-2xl">
+                            <p class="text-[10px] text-indigo-400 font-bold uppercase tracking-widest mb-2">Active Template</p>
+                            <p class="text-white font-bold text-2xl">Design #<?= $design_id ?></p>
+                            <div class="mt-3 flex items-center gap-2">
+                                <div class="w-3 h-3 rounded-full bg-green-400 animate-pulse"></div>
+                                <span class="text-xs text-green-300 font-medium">Ready to Generate</span>
+                            </div>
                         </div>
-                        <div>
-                            <label class="block text-sm font-medium text-slate-300 mb-2">CSV Data File</label>
-                            <input type="file" name="excel_file" accept=".csv" required class="w-full input-premium rounded-xl p-3 text-sm">
-                        </div>
-                        <div>
-                            <label class="block text-sm font-medium text-slate-300 mb-2">Photos (ZIP)</label>
-                            <input type="file" name="photos_zip" accept=".zip" required class="w-full input-premium rounded-xl p-3 text-sm">
-                        </div>
-                        <button type="submit" class="w-full btn-primary text-white font-bold py-4 rounded-2xl transition-all">Start Bulk Generation</button>
-                    </form>
+                    </div>
                 </div>
             </div>
 
-            <!-- RIGHT COLUMN: SINGLE ENTRY -->
-            <div class="lg:col-span-7">
-                <div class="glass-card rounded-[2rem] p-8 h-full">
-                    <div class="flex items-center gap-4 mb-8">
-                        <div class="p-3 bg-amber-500/10 rounded-2xl">
-                            <svg class="w-6 h-6 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
+            <!-- Cards Grid -->
+            <div class="grid lg:grid-cols-12 gap-6 sm:gap-8 mb-8">
+                <!-- BULK UPLOAD CARD -->
+                <div class="lg:col-span-5">
+                    <div class="glass-premium rounded-3xl p-6 sm:p-8 h-full">
+                        <div class="flex items-center gap-4 mb-8">
+                            <div class="icon-box p-4 rounded-2xl">
+                                <svg class="w-7 h-7 text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path>
+                                </svg>
+                            </div>
+                            <div>
+                                <h3 class="text-xl sm:text-2xl font-bold text-white">Bulk Processing</h3>
+                                <p class="text-xs text-slate-400 mt-1">Upload CSV & Photos</p>
+                            </div>
+                        </div>
+
+                        <form action="process_bulk.php" method="POST" enctype="multipart/form-data" class="space-y-5">
+                            <div>
+                                <label class="block text-sm font-semibold text-slate-300 mb-3">School Logo (Optional)</label>
+                                <input type="file" name="school_logo" accept="image/*" class="w-full input-luxury rounded-xl p-3.5 text-sm">
+                            </div>
+                            
+                            <div>
+                                <label class="block text-sm font-semibold text-slate-300 mb-3">Academic Year</label>
+                                <input type="text" name="academic_year" value="2025-26" class="w-full input-luxury rounded-xl p-3.5 text-sm font-medium">
+                            </div>
+                            
+                            <div>
+                                <label class="block text-sm font-semibold text-slate-300 mb-3">CSV Data File *</label>
+                                <input type="file" name="excel_file" accept=".csv" required class="w-full input-luxury rounded-xl p-3.5 text-sm">
+                            </div>
+                            
+                            <div>
+                                <label class="block text-sm font-semibold text-slate-300 mb-3">Photos ZIP Archive *</label>
+                                <input type="file" name="photos_zip" accept=".zip" required class="w-full input-luxury rounded-xl p-3.5 text-sm">
+                            </div>
+                            
+                            <button type="submit" class="w-full btn-premium btn-primary-gradient text-white font-bold py-4 rounded-xl shadow-xl shadow-indigo-500/30 hover:shadow-indigo-500/50 mt-6">
+                                <span class="flex items-center justify-center gap-2">
+                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+                                    </svg>
+                                    Start Bulk Generation
+                                </span>
+                            </button>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- MANUAL ENTRY CARD -->
+                <div class="lg:col-span-7">
+                    <div class="glass-premium rounded-3xl p-6 sm:p-8 h-full">
+                        <div class="flex items-center gap-4 mb-8">
+                            <div class="icon-box-accent p-4 rounded-2xl">
+                                <svg class="w-7 h-7 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
+                                </svg>
+                            </div>
+                            <div>
+                                <h3 class="text-xl sm:text-2xl font-bold text-white">Manual Entry</h3>
+                                <p class="text-xs text-slate-400 mt-1">Single Student Card</p>
+                            </div>
+                        </div>
+
+                        <form action="process_single.php" method="POST" enctype="multipart/form-data" class="grid grid-cols-1 sm:grid-cols-2 gap-5">
+                            <div class="sm:col-span-1">
+                                <label class="block text-sm font-semibold text-slate-300 mb-3">School Logo</label>
+                                <input type="file" name="school_logo" accept="image/*" class="w-full input-luxury rounded-xl p-3.5 text-sm">
+                            </div>
+                            
+                            <div class="sm:col-span-1">
+                                <label class="block text-sm font-semibold text-slate-300 mb-3">Academic Year</label>
+                                <input type="text" name="academic_year" value="2025-26" class="w-full input-luxury rounded-xl p-3.5 text-sm font-medium">
+                            </div>
+                            
+                            <div class="sm:col-span-2">
+                                <label class="block text-sm font-semibold text-slate-300 mb-3">Student Photo *</label>
+                                <input type="file" name="photo" accept="image/*" required class="w-full input-luxury rounded-xl p-3.5 text-sm">
+                            </div>
+                            
+                            <div class="sm:col-span-1">
+                                <label class="block text-sm font-semibold text-slate-300 mb-3">Full Name *</label>
+                                <input type="text" name="student_name" placeholder="STUDENT NAME" required class="w-full input-luxury rounded-xl p-3.5 text-sm uppercase font-medium">
+                            </div>
+                            
+                            <div class="sm:col-span-1">
+                                <label class="block text-sm font-semibold text-slate-300 mb-3">Parent Name *</label>
+                                <input type="text" name="parent_name" placeholder="PARENT NAME" required class="w-full input-luxury rounded-xl p-3.5 text-sm uppercase font-medium">
+                            </div>
+                            
+                            <div class="sm:col-span-1">
+                                <label class="block text-sm font-semibold text-slate-300 mb-3">Date of Birth *</label>
+                                <input type="date" name="dob" required class="w-full input-luxury rounded-xl p-3.5 text-sm">
+                            </div>
+                            
+                            <div class="sm:col-span-1">
+                                <label class="block text-sm font-semibold text-slate-300 mb-3">Blood Group *</label>
+                                <input type="text" name="blood_group" placeholder="A+" required class="w-full input-luxury rounded-xl p-3.5 text-sm uppercase font-medium">
+                            </div>
+                            
+                            <div class="sm:col-span-1">
+                                <label class="block text-sm font-semibold text-slate-300 mb-3">Phone Number *</label>
+                                <input type="text" name="phone" placeholder="+91 XXXXX XXXXX" required class="w-full input-luxury rounded-xl p-3.5 text-sm">
+                            </div>
+                            
+                            <div class="sm:col-span-1">
+                                <label class="block text-sm font-semibold text-slate-300 mb-3">Class *</label>
+                                <select name="student_class" required class="w-full input-luxury rounded-xl p-3.5 text-sm">
+                                    <option value="">Select Class</option>
+                                    <option value="NURSERY">Nursery</option>
+                                    <option value="JR. KG">Jr. KG</option>
+                                    <option value="SR. KG">Sr. KG</option>
+                                </select>
+                            </div>
+                            
+                            <div class="sm:col-span-2">
+                                <label class="block text-sm font-semibold text-slate-300 mb-3">Address *</label>
+                                <textarea name="address" placeholder="Enter complete address..." rows="2" required class="w-full input-luxury rounded-xl p-3.5 text-sm resize-none"></textarea>
+                            </div>
+                            
+                            <button type="submit" class="sm:col-span-2 w-full btn-premium btn-accent-gradient text-white font-bold py-4 rounded-xl shadow-xl shadow-amber-500/30 hover:shadow-amber-500/50 mt-2">
+                                <span class="flex items-center justify-center gap-2">
+                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
+                                    </svg>
+                                    Generate Single Card
+                                </span>
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <!-- FORMAT GUIDE -->
+            <div class="info-box glass-premium rounded-2xl p-6 sm:p-8 border-l-4 border-indigo-500">
+                <div class="flex items-start gap-4">
+                    <div class="flex-shrink-0">
+                        <div class="w-12 h-12 bg-indigo-500/20 rounded-xl flex items-center justify-center">
+                            <svg class="w-6 h-6 text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                             </svg>
                         </div>
-                        <h3 class="text-xl font-bold text-white">Manual Entry</h3>
                     </div>
-
-                    <form action="process_single.php" method="POST" enctype="multipart/form-data" class="grid sm:grid-cols-2 gap-6">
-                        <div class="sm:col-span-1">
-                            <label class="block text-sm font-medium text-slate-300 mb-2">School Logo</label>
-                            <input type="file" name="school_logo" accept="image/*" class="w-full input-premium rounded-xl p-3 text-sm">
+                    
+                    <div class="flex-1">
+                        <h4 class="text-lg sm:text-xl font-bold text-white mb-4">📋 File Format Requirements</h4>
+                        
+                        <div class="grid sm:grid-cols-2 gap-4 mb-5">
+                            <div class="bg-indigo-500/10 border border-indigo-500/20 rounded-xl p-4">
+                                <p class="text-sm font-bold text-indigo-300 mb-2">CSV File Structure</p>
+                                <p class="text-xs text-slate-300 leading-relaxed">
+                                    Columns: student_name, parent_name, dob (DD/MM/YYYY), blood_group, phone, student_class, address, photo_filename
+                                </p>
+                            </div>
+                            
+                            <div class="bg-amber-500/10 border border-amber-500/20 rounded-xl p-4">
+                                <p class="text-sm font-bold text-amber-300 mb-2">Photos ZIP Archive</p>
+                                <p class="text-xs text-slate-300 leading-relaxed">
+                                    JPG/PNG format, filenames must match CSV entries, no subfolders allowed
+                                </p>
+                            </div>
                         </div>
-                        <div class="sm:col-span-1">
-                            <label class="block text-sm font-medium text-slate-300 mb-2">Academic Year</label>
-                            <input type="text" name="academic_year" value="2025-26" class="w-full input-premium rounded-xl p-3 text-sm">
+                        
+                        <div class="bg-green-500/10 border border-green-500/20 rounded-xl p-4 inline-block">
+                            <a href="sample_data.csv" download class="flex items-center gap-2 text-green-300 hover:text-green-200 transition-colors">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                                </svg>
+                                <span class="font-semibold text-sm">Download Sample Files & Templates</span>
+                            </a>
                         </div>
-                        <div class="sm:col-span-2">
-                            <label class="block text-sm font-medium text-slate-300 mb-2">Student Photo</label>
-                            <input type="file" name="photo" accept="image/*" required class="w-full input-premium rounded-xl p-3 text-sm">
-                        </div>
-                        <input type="text" name="student_name" placeholder="Full Name" required class="w-full input-premium rounded-xl p-3 text-sm uppercase">
-                        <input type="text" name="parent_name" placeholder="Parent Name" required class="w-full input-premium rounded-xl p-3 text-sm uppercase">
-                        <input type="date" name="dob" required class="w-full input-premium rounded-xl p-3 text-sm">
-                        <input type="text" name="blood_group" placeholder="Blood Group" required class="w-full input-premium rounded-xl p-3 text-sm uppercase">
-                        <input type="text" name="phone" placeholder="Phone" required class="w-full input-premium rounded-xl p-3 text-sm">
-                        <select name="student_class" required class="w-full input-premium rounded-xl p-3 text-sm bg-slate-800">
-                            <option value="">Select Class</option>
-                            <option value="NURSERY">Nursery</option><option value="JR. KG">Jr. KG</option><option value="SR. KG">Sr. KG</option>
-                        </select>
-                        <textarea name="address" placeholder="Address" rows="2" required class="sm:col-span-2 w-full input-premium rounded-xl p-3 text-sm"></textarea>
-                        <button type="submit" class="sm:col-span-2 w-full btn-accent text-white font-bold py-4 rounded-2xl transition-all">Generate Card</button>
-                    </form>
+                    </div>
                 </div>
             </div>
         </div>
-        <!-- Just copy this single box after your heading -->
-<div class="bg-gradient-to-r from-blue-500/10 to-purple-500/10 border border-blue-500/30 rounded-xl p-4 mb-6 mt-5">
-    <p class="text-sm font-semibold text-white mb-3">📋 File Format Guide</p>
-    
-    <div class="text-lg text-slate-300 space-y-2">
-        <p><span class="text-blue-400 font-semibold">CSV Columns:</span> student_name, parent_name, dob (DD/MM/YYYY), blood_group, phone, student_class, address, photo_filename</p>
-        
-        <p><span class="text-amber-400 font-semibold">Photos ZIP:</span> All photos in JPG/PNG, filenames must match CSV, no folders inside ZIP</p>
-        
-        <p class="text-green-300">💡 <a href="sample_data.csv" download class="underline hover:text-green-200">Download Sample Files</a></p>
-    </div>
-</div>
     </div>
 </body>
 </html>
