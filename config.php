@@ -21,7 +21,8 @@ try {
         ]
     );
 } catch (PDOException $e) {
-    $pdo = null; // DB may not be ready during setup
+    // Prevent fatal error if DB is temporarily unavailable
+    $pdo = null;
 }
 
 // ===============================
@@ -37,12 +38,12 @@ if (session_status() === PHP_SESSION_NONE) {
 define('PROJECT_NAME', 'ID Card Generator');
 define('ADMIN_EMAIL', 'vskannan4153@gmail.com');
 
-// Onboarding Logic Settings
-define('TRUSTED_DOMAINS', ['school.edu', 'institutional.com', 'edu.in', 'ac.in']); // Example domains
+// Auto approval logic
+define('TRUSTED_DOMAINS', ['school.edu', 'institutional.com', 'edu.in', 'ac.in']);
 define('AUTO_APPROVAL_MINUTES', 5);
 
 // ===============================
-// ACTIVITY LOG FUNCTION
+// ACTIVITY LOG FUNCTION (FIXED)
 // ===============================
 function logActivity($user_id, $action)
 {
@@ -51,7 +52,7 @@ function logActivity($user_id, $action)
 
     try {
         $stmt = $pdo->prepare(
-            "INSERT INTO activity_logs (user_id, action, ip_address, timestamp)
+            "INSERT INTO activity_logs (user_id, action, ip_address, created_at)
              VALUES (?, ?, ?, NOW())"
         );
         $stmt->execute([
@@ -60,6 +61,6 @@ function logActivity($user_id, $action)
             $_SERVER['REMOTE_ADDR'] ?? 'UNKNOWN'
         ]);
     } catch (Exception $e) {
-        // Silent fail (no break)
+        // Silent fail – never break app
     }
 }

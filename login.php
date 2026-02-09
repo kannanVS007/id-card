@@ -68,6 +68,21 @@ class="absolute right-4 top-3 text-slate-400">
 </div>
 <button class="w-full bg-blue-600 text-white py-3 rounded-xl font-semibold">Sign In</button>
 </form>
+
+<!-- ✅ REGISTER LINK (NEW USER) -->
+<div class="mt-6 text-center">
+    <p class="text-slate-400 text-sm">
+        New user?
+        <a href="register.php" class="text-blue-500 hover:underline font-semibold">
+            Create an account
+        </a>
+    </p>
+</div>
+
+<p class="text-center text-xs text-slate-400 mt-6">
+    Admin support: <?= ADMIN_EMAIL ?>
+</p>
+
 </div>
 </div>
 <script>
