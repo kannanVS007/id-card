@@ -11,8 +11,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $password = $_POST['password'] ?? '';
     $confirm  = $_POST['confirm_password'] ?? '';
 
+    // New Fields
+    $contact_number = trim($_POST['contact_number'] ?? '');
+    $door_street    = trim($_POST['door_street'] ?? '');
+    $area           = trim($_POST['area'] ?? '');
+    $city_town      = trim($_POST['city_town'] ?? '');
+    $state          = trim($_POST['state'] ?? '');
+    $pincode        = trim($_POST['pincode'] ?? '');
+
     // Basic validation
-    if ($username === '' || $email === '' || $password === '' || $confirm === '') {
+    if (
+        $username === '' || $email === '' || $password === '' || $confirm === '' ||
+        $contact_number === '' || $door_street === '' || $area === '' ||
+        $city_town === '' || $state === '' || $pincode === ''
+    ) {
         $error = 'All fields are required';
     }
     elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
@@ -44,31 +56,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             }
 
             $stmt = $pdo->prepare(
-                "INSERT INTO users (username, email, password, role, status)
-                 VALUES (?, ?, ?, 'user', ?)"
+                "INSERT INTO users (username, email, password, role, status, contact_number, door_street, area, city_town, state, pincode)
+                 VALUES (?, ?, ?, 'user', ?, ?, ?, ?, ?, ?, ?)"
             );
 
-            if ($stmt->execute([$username, $email, $hashed_password, $status])) {
+            if ($stmt->execute([
+                $username, $email, $hashed_password, $status,
+                $contact_number, $door_street, $area, $city_town, $state, $pincode
+            ])) {
                 $userId = $pdo->lastInsertId();
 
                 // Log activity
                 logActivity($userId, "New User Registered ($status)");
 
-                // Notify admin
-                $subject = "New User Registration - $approval_type";
-                $message = "
-New user registered on " . PROJECT_NAME . "
-
-Username: $username
-Email: $email
-Status: " . ucfirst($status) . "
-Approval Type: $approval_type
-IP Address: " . ($_SERVER['REMOTE_ADDR'] ?? 'UNKNOWN') . "
-Date: " . date('Y-m-d H:i:s') . "
-
-Admin Monitoring: No manual action required unless behavior is suspicious.
-";
-                @mail(ADMIN_EMAIL, $subject, $message, "From: noreply@littlekrish.com");
 
                 if ($status === 'active') {
                     $success = 'Registration successful! Your institutional account is active. You can login now.';
@@ -162,6 +162,36 @@ body {
             <input type="password" name="confirm_password" required
                    class="w-full input-glass px-4 py-3 rounded-xl"
                    placeholder="Confirm password">
+
+            <div class="pt-4 border-t border-white/10">
+                <p class="text-slate-400 text-sm mb-3">Contact & Address Details</p>
+                
+                <input type="text" name="contact_number" required
+                       class="w-full input-glass px-4 py-3 rounded-xl mb-3"
+                       placeholder="Contact Number">
+
+                <input type="text" name="door_street" required
+                       class="w-full input-glass px-4 py-3 rounded-xl mb-3"
+                       placeholder="Door No & Street">
+
+                <div class="grid grid-cols-2 gap-3 mb-3">
+                    <input type="text" name="area" required
+                           class="w-full input-glass px-4 py-3 rounded-xl"
+                           placeholder="Area">
+                    <input type="text" name="city_town" required
+                           class="w-full input-glass px-4 py-3 rounded-xl"
+                           placeholder="City / Town">
+                </div>
+
+                <div class="grid grid-cols-2 gap-3">
+                    <input type="text" name="state" required
+                           class="w-full input-glass px-4 py-3 rounded-xl"
+                           placeholder="State">
+                    <input type="text" name="pincode" required
+                           class="w-full input-glass px-4 py-3 rounded-xl"
+                           placeholder="Pincode">
+                </div>
+            </div>
 
             <button type="submit"
                     class="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 rounded-xl transition">

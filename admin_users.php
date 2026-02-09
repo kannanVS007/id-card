@@ -66,7 +66,8 @@ $users = [];
 
 if ($pdo) {
     $stmt = $pdo->query(
-        "SELECT id, username, email, role, status, is_premium, created_at
+        "SELECT id, username, email, role, status, is_premium, created_at, 
+                contact_number, door_street, area, city_town, state, pincode
          FROM users
          ORDER BY created_at DESC"
     );
@@ -248,7 +249,7 @@ if ($pdo) {
                         </label>
                     </div>
                     
-                    <div class="flex flex-wrap gap-2">
+                    <div class="flex flex-wrap gap-2 mb-3">
                         <?php if ($u['status'] === 'pending'): ?>
                             <a href="?action=approve&id=<?= $u['id'] ?>" class="flex-1 text-center px-3 py-2 bg-emerald-100 text-emerald-700 rounded-lg text-sm font-bold hover:bg-emerald-200 transition">Approve</a>
                         <?php elseif ($u['status'] === 'active'): ?>
@@ -260,6 +261,34 @@ if ($pdo) {
                         <?php if ($u['role'] !== 'admin'): ?>
                             <a href="?action=delete&id=<?= $u['id'] ?>" class="flex-1 text-center px-3 py-2 bg-red-100 text-red-700 rounded-lg text-sm font-bold hover:bg-red-200 transition" onclick="return confirm('Really delete?')">Delete</a>
                         <?php endif; ?>
+                    </div>
+
+                    <!-- Mobile Details Toggle -->
+                    <button onclick="toggleMobileDetails('mob-details-<?= $u['id'] ?>', this)" 
+                            class="w-full py-2 flex items-center justify-center gap-2 text-slate-500 font-semibold border-t border-slate-100 mt-2 pt-3 hover:text-blue-500 transition">
+                        <span>View Details</span>
+                        <svg class="w-4 h-4 transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+                        </svg>
+                    </button>
+
+                    <!-- Mobile Details Body -->
+                    <div id="mob-details-<?= $u['id'] ?>" class="hidden mt-4 space-y-4 pt-4 border-t border-slate-50">
+                        <div class="bg-slate-50 p-4 rounded-xl space-y-3">
+                            <div>
+                                <div class="text-[10px] font-bold uppercase text-slate-400">Contact Number</div>
+                                <div class="text-sm font-semibold text-slate-700"><?= htmlspecialchars($u['contact_number'] ?: 'N/A') ?></div>
+                            </div>
+                            <div class="pt-2 border-t border-slate-200">
+                                <div class="text-[10px] font-bold uppercase text-slate-400">Address</div>
+                                <div class="text-sm font-semibold text-slate-700">
+                                    <?= htmlspecialchars($u['door_street'] ?: 'N/A') ?>,<br>
+                                    <?= htmlspecialchars($u['area'] ?: 'N/A') ?>,<br>
+                                    <?= htmlspecialchars($u['city_town'] ?: 'N/A') ?>,<br>
+                                    <?= htmlspecialchars($u['state']) ?> - <?= htmlspecialchars($u['pincode']) ?>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <?php endforeach; ?>
@@ -277,6 +306,7 @@ if ($pdo) {
                                 <th class="px-6 py-4">Premium</th>
                                 <th class="px-6 py-4">Registered</th>
                                 <th class="px-6 py-4 text-right">Actions</th>
+                                <th class="px-6 py-4 text-center">Details</th>
                             </tr>
                         </thead>
                         <tbody class="divide-y divide-slate-100">
@@ -326,6 +356,56 @@ if ($pdo) {
                                         <?php endif; ?>
                                     </div>
                                 </td>
+                                <td class="px-6 py-4 text-center">
+                                    <button onclick="toggleDetails('details-<?= $u['id'] ?>', this)" 
+                                            class="text-blue-500 hover:text-blue-700 transition transform duration-200">
+                                        <svg class="w-6 h-6 inline" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+                                        </svg>
+                                    </button>
+                                </td>
+                            </tr>
+                            <!-- Expanded Details Row -->
+                            <tr id="details-<?= $u['id'] ?>" class="hidden bg-slate-50/50">
+                                <td colspan="7" class="px-8 py-6">
+                                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 bg-white p-6 rounded-2xl border border-slate-100 glass shadow-sm">
+                                        <div>
+                                            <h4 class="text-xs font-bold uppercase text-slate-400 mb-4 tracking-wider">Contact Information</h4>
+                                            <div class="flex items-center gap-3">
+                                                <div class="w-10 h-10 rounded-full bg-blue-50 flex items-center justify-center text-blue-500">
+                                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h2.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/>
+                                                    </svg>
+                                                </div>
+                                                <div>
+                                                    <div class="text-xs text-slate-400">Contact Number</div>
+                                                    <div class="font-semibold text-slate-700"><?= htmlspecialchars($u['contact_number'] ?: 'N/A') ?></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <h4 class="text-xs font-bold uppercase text-slate-400 mb-4 tracking-wider">Address Information</h4>
+                                            <div class="grid grid-cols-2 gap-4">
+                                                <div>
+                                                    <div class="text-xs text-slate-400">Door No & Street</div>
+                                                    <div class="font-semibold text-slate-700"><?= htmlspecialchars($u['door_street'] ?: 'N/A') ?></div>
+                                                </div>
+                                                <div>
+                                                    <div class="text-xs text-slate-400">Area</div>
+                                                    <div class="font-semibold text-slate-700"><?= htmlspecialchars($u['area'] ?: 'N/A') ?></div>
+                                                </div>
+                                                <div>
+                                                    <div class="text-xs text-slate-400">City / Town</div>
+                                                    <div class="font-semibold text-slate-700"><?= htmlspecialchars($u['city_town'] ?: 'N/A') ?></div>
+                                                </div>
+                                                <div>
+                                                    <div class="text-xs text-slate-400">State & Pincode</div>
+                                                    <div class="font-semibold text-slate-700"><?= htmlspecialchars($u['state']) ?> - <?= htmlspecialchars($u['pincode']) ?></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </td>
                             </tr>
                             <?php endforeach; ?>
                         </tbody>
@@ -343,6 +423,64 @@ if ($pdo) {
             overlay.classList.toggle('active');
         }
         
+        let lastExpandedId = null;
+        let lastMobExpandedId = null;
+
+        function toggleDetails(id, btn) {
+            const row = document.getElementById(id);
+            const isHidden = row.classList.contains('hidden');
+            
+            if (lastExpandedId && lastExpandedId !== id) {
+                const lastRow = document.getElementById(lastExpandedId);
+                if (lastRow) {
+                    lastRow.classList.add('hidden');
+                    // Reset rotation for all detail buttons
+                    document.querySelectorAll('button[onclick^="toggleDetails"]').forEach(b => b.classList.remove('rotate-180'));
+                }
+            }
+
+            if (isHidden) {
+                row.classList.remove('hidden');
+                btn.classList.add('rotate-180');
+                lastExpandedId = id;
+            } else {
+                row.classList.add('hidden');
+                btn.classList.remove('rotate-180');
+                lastExpandedId = null;
+            }
+        }
+
+        function toggleMobileDetails(id, btn) {
+            const body = document.getElementById(id);
+            const isHidden = body.classList.contains('hidden');
+            const svg = btn.querySelector('svg');
+            const span = btn.querySelector('span');
+
+            if (lastMobExpandedId && lastMobExpandedId !== id) {
+                const lastBody = document.getElementById(lastMobExpandedId);
+                if (lastBody) {
+                    lastBody.classList.add('hidden');
+                    // Reset all other mobile detail buttons
+                    document.querySelectorAll('button[onclick^="toggleMobileDetails"]').forEach(mb => {
+                        mb.querySelector('svg').classList.remove('rotate-180');
+                        mb.querySelector('span').textContent = 'View Details';
+                    });
+                }
+            }
+
+            if (isHidden) {
+                body.classList.remove('hidden');
+                svg.classList.add('rotate-180');
+                span.textContent = 'Hide Details';
+                lastMobExpandedId = id;
+            } else {
+                body.classList.add('hidden');
+                svg.classList.remove('rotate-180');
+                span.textContent = 'View Details';
+                lastMobExpandedId = null;
+            }
+        }
+
         // Close menu when clicking outside on mobile
         document.addEventListener('click', function(event) {
             const sidebar = document.querySelector('.sidebar');
@@ -350,7 +488,7 @@ if ($pdo) {
             
             if (window.innerWidth <= 768 && 
                 !sidebar.contains(event.target) && 
-                !menuBtn.contains(event.target) &&
+                menuBtn && !menuBtn.contains(event.target) &&
                 sidebar.classList.contains('active')) {
                 toggleMenu();
             }

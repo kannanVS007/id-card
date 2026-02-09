@@ -35,8 +35,6 @@ if (session_status() === PHP_SESSION_NONE) {
 // GLOBAL SETTINGS
 // ===============================
 define('PROJECT_NAME', 'ID Card Generator');
-define('ADMIN_EMAIL', 'vskannan4135@gmail.com');
-define('ADMIN_MOBILE', '6379524135');
 
 // Onboarding Logic Settings
 define('TRUSTED_DOMAINS', ['school.edu', 'institutional.com', 'edu.in', 'ac.in']); // Example domains
@@ -52,7 +50,7 @@ function logActivity($user_id, $action)
 
     try {
         $stmt = $pdo->prepare(
-            "INSERT INTO activity_logs (user_id, action, ip_address, created_at)
+            "INSERT INTO activity_logs (user_id, action, ip_address, timestamp)
              VALUES (?, ?, ?, NOW())"
         );
         $stmt->execute([
@@ -64,3 +62,4 @@ function logActivity($user_id, $action)
         // Silent fail (no break)
     }
 }
+

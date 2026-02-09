@@ -30,18 +30,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         // Auto-Approve now
                         $pdo->prepare("UPDATE users SET status = 'active' WHERE id = ?")->execute([$user['id']]);
                         
-                        // Notify admin about auto-approval login
-                        $subject = "User Auto-Approved - First Login";
-                        $message = "
-User has been automatically approved after " . AUTO_APPROVAL_MINUTES . " minutes.
-
-Username: " . $user['username'] . "
-Email: " . $user['email'] . "
-Approval Type: Timed Auto-Approval
-IP Address: " . ($_SERVER['REMOTE_ADDR'] ?? 'UNKNOWN') . "
-Date: " . date('Y-m-d H:i:s') . "
-";
-                        @mail(ADMIN_EMAIL, $subject, $message, "From: noreply@littlekrish.com");
                         
                         // Proceed to success
                         $_SESSION['user_id']  = $user['id'];
@@ -66,21 +54,6 @@ Date: " . date('Y-m-d H:i:s') . "
                 $_SESSION['email']    = $user['email'];
                 $_SESSION['is_premium'] = (bool)$user['is_premium'];
 
-                // Suspicious Monitoring Alert for non-institutional domains
-                $email_parts = explode('@', $user['email']);
-                $domain = end($email_parts);
-                if (!in_array($domain, TRUSTED_DOMAINS) && $user['role'] !== 'admin') {
-                    $subject = "Suspicious Access Alert - Non-Institutional User";
-                    $message = "
-Non-institutional user logged in. Monitoring recommended.
-
-Username: " . $user['username'] . "
-Email: " . $user['email'] . "
-IP Address: " . ($_SERVER['REMOTE_ADDR'] ?? 'UNKNOWN') . "
-Date: " . date('Y-m-d H:i:s') . "
-";
-                    @mail(ADMIN_EMAIL, $subject, $message, "From: noreply@littlekrish.com");
-                }
 
                 logActivity($user['id'], 'User Login');
 
