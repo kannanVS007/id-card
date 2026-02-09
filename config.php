@@ -35,6 +35,7 @@ if (session_status() === PHP_SESSION_NONE) {
 // GLOBAL SETTINGS
 // ===============================
 define('PROJECT_NAME', 'ID Card Generator');
+define('ADMIN_EMAIL', 'vskannan4153@gmail.com');
 
 // Onboarding Logic Settings
 define('TRUSTED_DOMAINS', ['school.edu', 'institutional.com', 'edu.in', 'ac.in']); // Example domains
@@ -62,4 +63,3 @@ function logActivity($user_id, $action)
         // Silent fail (no break)
     }
 }
-
