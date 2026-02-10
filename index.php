@@ -10,21 +10,21 @@
     <style>
         body { font-family: 'Outfit', sans-serif; }
         
-        /* Premium Background Gradients */
+        /* Premium Pink Background Gradients */
         .bg-premium-mesh {
-            background-color: #020617;
+            background-color: #fdf2f8;
             background-image: 
-                radial-gradient(at 0% 0%, rgba(79, 70, 229, 0.15) 0px, transparent 50%),
-                radial-gradient(at 100% 0%, rgba(147, 51, 234, 0.1) 0px, transparent 50%),
-                radial-gradient(at 100% 100%, rgba(79, 70, 229, 0.1) 0px, transparent 50%),
-                radial-gradient(at 0% 100%, rgba(147, 51, 234, 0.1) 0px, transparent 50%);
+                radial-gradient(at 0% 0%, rgba(236, 72, 153, 0.12) 0px, transparent 50%),
+                radial-gradient(at 100% 0%, rgba(219, 39, 119, 0.08) 0px, transparent 50%),
+                radial-gradient(at 100% 100%, rgba(236, 72, 153, 0.08) 0px, transparent 50%),
+                radial-gradient(at 0% 100%, rgba(219, 39, 119, 0.1) 0px, transparent 50%);
         }
 
         .glass-panel {
-            background: rgba(15, 23, 42, 0.6);
+            background: rgba(255, 255, 255, 0.85);
             backdrop-filter: blur(24px);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+            border: 1px solid rgba(236, 72, 153, 0.15);
+            box-shadow: 0 25px 50px -12px rgba(236, 72, 153, 0.25);
         }
 
         @keyframes logo-load {
@@ -36,24 +36,24 @@
         }
 
         @keyframes shadow-pulse {
-            0%, 100% { box-shadow: 0 0 20px rgba(79, 70, 229, 0.1); }
-            50% { box-shadow: 0 0 40px rgba(79, 70, 229, 0.3); }
+            0%, 100% { box-shadow: 0 0 20px rgba(236, 72, 153, 0.15); }
+            50% { box-shadow: 0 0 40px rgba(236, 72, 153, 0.3); }
         }
         .animate-shadow-pulse {
             animation: shadow-pulse 4s ease-in-out infinite;
         }
 
         .text-glow {
-            text-shadow: 0 0 20px rgba(255, 255, 255, 0.2);
+            text-shadow: 0 0 20px rgba(236, 72, 153, 0.2);
         }
     </style>
 </head>
-<body class="bg-premium-mesh text-slate-300 min-h-screen flex flex-col items-center justify-center p-6 py-12 lg:py-6 overflow-x-hidden relative">
+<body class="bg-premium-mesh text-gray-800 min-h-screen flex flex-col items-center justify-center p-6 py-12 lg:py-6 overflow-x-hidden relative">
     
     <!-- Deep Glow Shapes -->
-    <div class="absolute top-[-10%] left-[-10%] w-[50%] h-[50%] bg-indigo-600/10 rounded-full blur-[160px] animate-pulse pointer-events-none"></div>
-    <div class="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] bg-purple-600/10 rounded-full blur-[140px] animate-pulse pointer-events-none" style="animation-delay: 2s;"></div>
-    <div class="absolute top-[40%] left-[20%] w-[30%] h-[30%] bg-blue-600/5 rounded-full blur-[120px] animate-pulse pointer-events-none" style="animation-delay: 4s;"></div>
+    <div class="absolute top-[-10%] left-[-10%] w-[50%] h-[50%] bg-pink-400/10 rounded-full blur-[160px] animate-pulse pointer-events-none"></div>
+    <div class="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] bg-rose-400/10 rounded-full blur-[140px] animate-pulse pointer-events-none" style="animation-delay: 2s;"></div>
+    <div class="absolute top-[40%] left-[20%] w-[30%] h-[30%] bg-fuchsia-400/8 rounded-full blur-[120px] animate-pulse pointer-events-none" style="animation-delay: 4s;"></div>
 
     <div class="max-w-7xl w-full grid lg:grid-cols-2 gap-12 lg:gap-24 items-center relative z-10">
         
@@ -69,17 +69,17 @@
     >
 </div>
 
-                <h2 class="text-3xl font-black tracking-tighter text-white"><?= PROJECT_NAME ?></h2>
+                <h2 class="text-3xl font-black tracking-tighter text-gray-900"><?= PROJECT_NAME ?></h2>
             </div>
 
             <div class="space-y-6">
-                <h1 class="text-6xl lg:text-8xl font-black text-white leading-none tracking-tighter text-glow">
+                <h1 class="text-6xl lg:text-8xl font-black text-gray-900 leading-none tracking-tighter text-glow">
                     Premium <br>
-                    <span class="text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 via-purple-400 to-cyan-400">
+                    <span class="text-transparent bg-clip-text bg-gradient-to-r from-pink-500 via-rose-500 to-fuchsia-500">
                         Institutional ID 
                     </span> Solutions
                 </h1>
-                <p class="text-slate-400 text-xl max-w-lg leading-relaxed font-medium">
+                <p class="text-gray-700 text-xl max-w-lg leading-relaxed font-medium">
                     The elite ecosystem for generating secure, high-fidelity institutional credentials. Seamlessly scalable, exceptionally designed.
                 </p>
             </div>
@@ -87,45 +87,45 @@
             <!-- Features -->
             <div class="grid gap-6">
                 <div class="flex items-start gap-4 group">
-                    <div class="w-10 h-10 rounded-xl bg-indigo-500/10 border border-indigo-500/20 flex items-center justify-center text-indigo-400 group-hover:bg-indigo-500 group-hover:text-white transition-all">
+                    <div class="w-10 h-10 rounded-xl bg-pink-100 border border-pink-200 flex items-center justify-center text-pink-600 group-hover:bg-pink-500 group-hover:text-white transition-all">
                         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 5a1 1 0 011-1h14a1 1 0 011 1v2a1 1 0 01-1 1H5a1 1 0 01-1-1V5zM4 13a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H5a1 1 0 01-1-1v-6zM16 13a1 1 0 011-1h2a1 1 0 011 1v6a1 1 0 01-1 1h-2a1 1 0 01-1-1v-6z"></path></svg>
                     </div>
                     <div>
-                        <h4 class="font-bold text-white">Multiple Design Templates</h4>
-                        <p class="text-sm text-slate-500">Choose from professional, modern, or gold layout presets.</p>
+                        <h4 class="font-bold text-gray-900">Multiple Design Templates</h4>
+                        <p class="text-sm text-gray-600">Choose from professional, modern, or gold layout presets.</p>
                     </div>
                 </div>
 
                 <div class="flex items-start gap-4 group">
-                    <div class="w-10 h-10 rounded-xl bg-purple-500/10 border border-purple-500/20 flex items-center justify-center text-purple-400 group-hover:bg-purple-500 group-hover:text-white transition-all">
+                    <div class="w-10 h-10 rounded-xl bg-rose-100 border border-rose-200 flex items-center justify-center text-rose-600 group-hover:bg-rose-500 group-hover:text-white transition-all">
                         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
                     </div>
                     <div>
-                        <h4 class="font-bold text-white">Bulk & Manual Creation</h4>
-                        <p class="text-sm text-slate-500">Generate thousands of IDs from CSV or create single cards manually.</p>
+                        <h4 class="font-bold text-gray-900">Bulk & Manual Creation</h4>
+                        <p class="text-sm text-gray-600">Generate thousands of IDs from CSV or create single cards manually.</p>
                     </div>
                 </div>
 
                 <div class="flex items-start gap-4 group">
-                    <div class="w-10 h-10 rounded-xl bg-pink-500/10 border border-pink-500/20 flex items-center justify-center text-pink-400 group-hover:bg-pink-500 group-hover:text-white transition-all">
+                    <div class="w-10 h-10 rounded-xl bg-fuchsia-100 border border-fuchsia-200 flex items-center justify-center text-fuchsia-600 group-hover:bg-fuchsia-500 group-hover:text-white transition-all">
                         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"></path></svg>
                     </div>
                     <div>
-                        <h4 class="font-bold text-white">Print-Ready Output</h4>
-                        <p class="text-sm text-slate-500">High-resolution PDF generation ready for physical card printing.</p>
+                        <h4 class="font-bold text-gray-900">Print-Ready Output</h4>
+                        <p class="text-sm text-gray-600">High-resolution PDF generation ready for physical card printing.</p>
                     </div>
                 </div>
             </div>
 
             <!-- Trust badge / Footer mock -->
-            <div class="pt-8 border-t border-slate-800 flex flex-col sm:flex-row items-start sm:items-center gap-6 sm:gap-10">
+            <div class="pt-8 border-t border-pink-200 flex flex-col sm:flex-row items-start sm:items-center gap-6 sm:gap-10">
                 <div class="flex items-center gap-4">
                     <div class="flex -space-x-3">
-                        <div class="w-8 h-8 rounded-full bg-slate-700 border-2 border-[#020617]"></div>
-                        <div class="w-8 h-8 rounded-full bg-indigo-600 border-2 border-[#020617]"></div>
-                        <div class="w-8 h-8 rounded-full bg-slate-600 border-2 border-[#020617]"></div>
+                        <div class="w-8 h-8 rounded-full bg-pink-300 border-2 border-[#fdf2f8]"></div>
+                        <div class="w-8 h-8 rounded-full bg-rose-400 border-2 border-[#fdf2f8]"></div>
+                        <div class="w-8 h-8 rounded-full bg-fuchsia-300 border-2 border-[#fdf2f8]"></div>
                     </div>
-                    <p class="text-xs text-slate-500 font-medium">Trusted by 200+ Institutions across India</p>
+                    <p class="text-xs text-gray-600 font-medium">Trusted by 200+ Institutions across India</p>
                 </div>
 
                 <!-- Official Social Links -->
@@ -161,19 +161,19 @@
         <!-- RIGHT SIDE: AUTH ENTRY -->
         <div class="lg:justify-self-end w-full max-w-md">
             <div class="glass-panel p-8 sm:p-10 rounded-[2.5rem] shadow-2xl relative overflow-hidden group">
-                <div class="absolute top-0 right-0 w-32 h-32 bg-indigo-500/10 rounded-full -mr-16 -mt-16 blur-2xl"></div>
+                <div class="absolute top-0 right-0 w-32 h-32 bg-pink-400/10 rounded-full -mr-16 -mt-16 blur-2xl"></div>
                 
                 <div class="relative z-10">
                     <div class="text-center mb-10">
-                        <h3 class="text-3xl font-bold text-white mb-2 tracking-tight">Access Portal</h3>
-                        <p class="text-slate-500 text-sm">Select an option to continue to your dashboard</p>
+                        <h3 class="text-3xl font-bold text-gray-900 mb-2 tracking-tight">Access Portal</h3>
+                        <p class="text-gray-600 text-sm">Select an option to continue to your dashboard</p>
                     </div>
 
                     <div class="space-y-4">
-                        <a href="login.php" class="flex items-center justify-between w-full bg-gradient-to-r from-indigo-600 to-indigo-700 hover:from-indigo-500 hover:to-indigo-600 text-white p-5 rounded-2xl font-bold transition-all shadow-xl shadow-indigo-600/20 group/btn border border-indigo-400/20">
+                        <a href="login.php" class="flex items-center justify-between w-full bg-gradient-to-r from-pink-500 to-rose-500 hover:from-pink-600 hover:to-rose-600 text-white p-5 rounded-2xl font-bold transition-all shadow-xl shadow-pink-500/30 group/btn border border-pink-300/30">
                             <span class="flex items-center gap-4">
-                                <div class="w-10 h-10 bg-white/10 rounded-xl flex items-center justify-center backdrop-blur-sm">
-                                    <svg class="w-5 h-5 text-indigo-100" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1"></path></svg>
+                                <div class="w-10 h-10 bg-white/20 rounded-xl flex items-center justify-center backdrop-blur-sm">
+                                    <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1"></path></svg>
                                 </div>
                                 Account Login
                             </span>
@@ -181,26 +181,33 @@
                         </a>
 
                         <div class="relative py-2">
-                            <div class="absolute inset-x-0 top-1/2 -translate-y-1/2 h-px bg-white/5"></div>
-                            <span class="relative bg-[#020617]/0 backdrop-blur-3xl px-4 text-[10px] font-black uppercase text-slate-500 tracking-widest mx-auto block w-max">OR SYSTEM ACCESS</span>
+                            <div class="absolute inset-x-0 top-1/2 -translate-y-1/2 h-px bg-pink-200"></div>
+                            <span class="relative bg-white px-4 text-[10px] font-black uppercase text-gray-500 tracking-widest mx-auto block w-max">OR SYSTEM ACCESS</span>
                         </div>
 
-                        <a href="register.php" class="flex items-center justify-between w-full bg-white/5 hover:bg-white/10 text-white p-5 rounded-2xl font-bold transition-all border border-white/10 shadow-lg group/btn2">
+                        <a href="register.php" class="flex items-center justify-between w-full bg-pink-50 hover:bg-pink-100 text-gray-900 p-5 rounded-2xl font-bold transition-all border border-pink-200 shadow-lg group/btn2">
                             <span class="flex items-center gap-4">
-                                <div class="w-10 h-10 bg-white/10 rounded-xl flex items-center justify-center backdrop-blur-sm">
-                                    <svg class="w-5 h-5 text-slate-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z"></path></svg>
+                                <div class="w-10 h-10 bg-pink-100 rounded-xl flex items-center justify-center backdrop-blur-sm">
+                                    <svg class="w-5 h-5 text-pink-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z"></path></svg>
                                 </div>
                                 Create Account
                             </span>
-                             <div class="w-8 h-8 rounded-full border border-white/10 flex items-center justify-center group-hover/btn2:bg-white/10 transition-colors">
-                                <svg class="w-5 h-5 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
+                             <div class="w-8 h-8 rounded-full border border-pink-200 flex items-center justify-center group-hover/btn2:bg-pink-200 transition-colors">
+                                <svg class="w-5 h-5 text-pink-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
                              </div>
                         </a>
                     </div>
 
-                    <div class="mt-12 text-center p-6 bg-indigo-500/5 rounded-3xl border border-indigo-500/10">
-                        <p class="text-xs text-slate-500 leading-relaxed">
-                            Need institutional setup? <br> Reach out at <a href="mailto:<?= ADMIN_EMAIL ?>" class="text-indigo-400 hover:underline"><?= ADMIN_EMAIL ?></a>
+                    <div class="mt-12 text-center p-6 bg-pink-50 rounded-3xl border border-pink-200">
+                        <p class="text-xs text-gray-600 leading-relaxed">
+                            Need institutional setup? <br> 
+                            <span class="inline-block mt-2">
+                                Email: <a href="mailto:<?= ADMIN_EMAIL ?>" class="text-pink-600 hover:underline font-semibold"><?= ADMIN_EMAIL ?></a>
+                            </span>
+                            <br>
+                            <span class="inline-block mt-1">
+                                Call: <a href="tel:+919962552023" class="text-pink-600 hover:underline font-semibold">+91 9962552023</a> 
+                            </span>
                         </p>
                     </div>
                 </div>
