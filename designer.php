@@ -2,7 +2,7 @@
 require_once 'auth_check.php';
 
 if (!isset($_SESSION['is_premium']) || !$_SESSION['is_premium']) {
-    header("Location: index.php?error=premium_required");
+    header("Location: dashboard.php?error=premium_required");
     exit;
 }
 
@@ -240,15 +240,12 @@ $bg_back = $layout ? $layout['background_back'] : '';
             animation: slideInRight 0.3s ease-out;
         }
         
-        @keyframes slideInRight {
-            from {
-                opacity: 0;
-                transform: translateX(100px);
-            }
-            to {
-                opacity: 1;
-                transform: translateX(0);
-            }
+        @keyframes logo-load {
+            from { opacity: 0; transform: scale(0.9); }
+            to { opacity: 1; transform: scale(1); }
+        }
+        .animate-logo-load {
+            animation: logo-load 0.7s ease-out forwards;
         }
     </style>
 </head>
@@ -269,11 +266,14 @@ $bg_back = $layout ? $layout['background_back'] : '';
                             </svg>
                         </button>
                         
-                        <div class="w-10 h-10 sm:w-12 sm:h-12 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-2xl flex items-center justify-center shadow-lg shadow-indigo-500/30">
-                            <svg class="w-5 h-5 sm:w-6 sm:h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01"></path>
-                            </svg>
-                        </div>
+                       <div class="w-14 h-14 flex items-center justify-center transition-transform duration-300 ease-out hover:scale-105 animate-logo-load">
+    <img 
+        src="assets/images/trishul-logo.png"
+        alt="Trishul Logo"
+        class="w-14 h-14 object-contain"
+    >
+</div>
+
                         <div>
                             <h1 class="text-lg sm:text-xl lg:text-2xl font-bold bg-gradient-to-r from-indigo-400 to-purple-400 bg-clip-text text-transparent">
                                 Visual ID Designer
@@ -282,7 +282,7 @@ $bg_back = $layout ? $layout['background_back'] : '';
                         </div>
                     </div>
                     <div class="flex items-center gap-2 sm:gap-4">
-                        <a href="index.php" class="hidden sm:flex items-center gap-2 text-slate-400 hover:text-white font-medium transition px-3 sm:px-4 py-2 rounded-xl hover:bg-white/10 text-sm">
+                        <a href="dashboard.php" class="hidden sm:flex items-center gap-2 text-slate-400 hover:text-white font-medium transition px-3 sm:px-4 py-2 rounded-xl hover:bg-white/10 text-sm">
                             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
                             </svg>

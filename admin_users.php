@@ -183,7 +183,7 @@ if ($pdo) {
             <a href="admin_dashboard.php" class="block p-3 hover:bg-slate-800 rounded-xl transition">Dashboard</a>
             <a href="admin_users.php" class="block p-3 bg-blue-600 rounded-xl font-semibold">User Management</a>
             <a href="admin_logs.php" class="block p-3 hover:bg-slate-800 rounded-xl transition">Generation Logs</a>
-            <a href="index.php" class="block p-3 hover:bg-slate-800 rounded-xl transition">Main System</a>
+            <a href="dashboard.php" class="block p-3 hover:bg-slate-800 rounded-xl transition">Main System</a>
             <div class="pt-4 border-t border-slate-800 mt-4">
                 <a href="logout.php" class="block p-3 text-red-400 hover:bg-red-500/10 rounded-xl transition">Logout</a>
             </div>

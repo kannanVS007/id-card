@@ -9,7 +9,7 @@ if (!isset($_SESSION['design_id'])) {
 // Handle selection
 if (isset($_GET['select'])) {
     $_SESSION['design_id'] = (int)$_GET['select'];
-    header("Location: index.php?msg=design_updated");
+    header("Location: dashboard.php?msg=design_updated");
     exit;
 }
 
@@ -53,18 +53,34 @@ $designs = [
     <title>Select ID Design | <?= PROJECT_NAME ?></title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet">
-    <style>body { font-family: 'Outfit', sans-serif; }</style>
+    <style>
+        body { font-family: 'Outfit', sans-serif; }
+        @keyframes logo-load {
+            from { opacity: 0; transform: scale(0.9); }
+            to { opacity: 1; transform: scale(1); }
+        }
+        .animate-logo-load {
+            animation: logo-load 0.7s ease-out forwards;
+        }
+    </style>
 </head>
 <body class="bg-slate-50 min-h-screen pb-12">
     <!-- Navbar -->
     <nav class="bg-white border-b border-slate-200 px-8 py-4 mb-12 shadow-sm">
         <div class="max-w-7xl mx-auto flex justify-between items-center">
             <div class="flex items-center gap-3">
-                <div class="w-10 h-10 bg-blue-600 rounded-xl flex items-center justify-center text-white font-bold text-xl">L</div>
-                <h1 class="text-xl font-bold text-slate-800">Design Showcase</h1>
+                <div class="w-14 h-14 flex items-center justify-center transition-transform duration-300 ease-out hover:scale-105 animate-logo-load">
+    <img 
+        src="assets/images/trishul-logo.png"
+        alt="Trishul Logo"
+        class="w-14 h-14 object-contain"
+    >
+</div>
+
+                <h1 class="text-xl font-bold text-slate-800">Design Gallery</h1>
             </div>
             <div class="flex items-center gap-6">
-                <a href="index.php" class="text-slate-600 font-semibold hover:text-blue-600 transition">Back to Generator</a>
+                <a href="dashboard.php" class="text-slate-600 font-semibold hover:text-blue-600 transition">Back to Generator</a>
                 <?php if(isAdmin()): ?>
                     <a href="admin_dashboard.php" class="bg-slate-900 text-white px-5 py-2 rounded-xl font-semibold hover:bg-slate-800 transition">Admin Panel</a>
                 <?php endif; ?>
@@ -73,6 +89,7 @@ $designs = [
     </nav>
 
     <div class="max-w-7xl mx-auto px-8">
+
         <div class="text-center mb-12">
             <h2 class="text-4xl font-black text-slate-900 mb-4 tracking-tight">Pick Your Design Style</h2>
             <p class="text-slate-500 max-w-2xl mx-auto text-lg">Different schools have different branding expectations. Select a layout that best represents your institution.</p>
@@ -88,15 +105,56 @@ $designs = [
                 <!-- Preview Area -->
                 <div class="relative aspect-[3/4] rounded-[2rem] mb-6 overflow-hidden shadow-inner group-hover:scale-[1.02] transition-transform duration-500">
                     <div class="absolute inset-0 <?= $design['color'] ?>"></div>
-                    <!-- Mock ID Content -->
-                    <div class="absolute inset-x-4 top-6 flex flex-col items-center">
-                        <div class="w-8 h-8 bg-white/20 rounded-lg mb-2"></div>
-                        <div class="h-1.5 w-20 bg-white/40 rounded-full mb-1"></div>
-                        <div class="h-1 w-12 bg-white/20 rounded-full"></div>
-                    </div>
-                    <div class="absolute inset-x-8 top-24 bottom-12 bg-white/10 backdrop-blur-sm rounded-2xl border border-white/10 flex items-center justify-center">
-                         <div class="w-16 h-20 bg-white/20 rounded-xl"></div>
-                    </div>
+                    <!-- Preview Layouts -->
+                    <?php if ($design['id'] == 1): ?>
+                        <!-- DESIGN 1 — Classic Professional -->
+                        <div class="absolute inset-0 flex flex-col items-center py-6 px-4">
+                            <div class="w-full h-8 bg-white/10 rounded-md mb-6"></div>
+                            <div class="w-20 h-20 rounded-full bg-white/20 border-2 border-white/30 flex items-center justify-center mb-6">
+                                <div class="w-14 h-14 rounded-full bg-white/10"></div>
+                            </div>
+                            <div class="h-2.5 w-28 bg-white/40 rounded-full mb-3"></div>
+                            <div class="h-1.5 w-16 bg-white/20 rounded-full mb-auto"></div>
+                            <div class="w-full h-5 bg-white/10 rounded-sm"></div>
+                        </div>
+
+                    <?php elseif ($design['id'] == 2): ?>
+                        <!-- DESIGN 2 — Modern Minimalist -->
+                        <div class="absolute inset-0 p-6 flex flex-col">
+                            <div class="w-full h-[2px] bg-white/30 mb-8"></div>
+                            <div class="flex gap-5">
+                                <div class="w-16 h-20 bg-white/10 rounded border border-white/10"></div>
+                                <div class="flex flex-col gap-3 py-2">
+                                    <div class="h-2 w-24 bg-white/40 rounded-full"></div>
+                                    <div class="h-1.5 w-16 bg-white/20 rounded-full"></div>
+                                    <div class="h-1.5 w-20 bg-white/20 rounded-full"></div>
+                                </div>
+                            </div>
+                        </div>
+
+                    <?php elseif ($design['id'] == 3): ?>
+                        <!-- DESIGN 3 — Playful Academy -->
+                        <div class="absolute inset-0 p-4 flex flex-col items-center">
+                            <div class="flex-1 w-full bg-white/10 rounded-[2rem] flex flex-col items-center justify-center p-4 mb-4">
+                                <div class="w-24 h-24 bg-white/20 rounded-3xl border-4 border-white/10 shadow-lg"></div>
+                            </div>
+                            <div class="w-full h-12 bg-white/20 rounded-2xl flex items-center justify-center">
+                                <div class="h-2.5 w-24 bg-white/40 rounded-full"></div>
+                            </div>
+                        </div>
+
+                    <?php elseif ($design['id'] == 4): ?>
+                        <!-- DESIGN 4 — Premium Gold -->
+                        <div class="absolute inset-0 flex flex-col items-center">
+                            <div class="w-full h-12 bg-gradient-to-b from-white/20 to-transparent mb-6"></div>
+                            <div class="w-20 h-24 bg-white/5 border-2 border-amber-400/30 rounded shadow-2xl flex items-center justify-center mb-6">
+                                <div class="w-16 h-20 bg-white/10"></div>
+                            </div>
+                            <div class="h-2.5 w-32 bg-white/40 rounded-full mb-3"></div>
+                            <div class="h-1.5 w-20 bg-white/20 rounded-full mb-auto"></div>
+                            <div class="w-full h-4 bg-amber-500/20"></div>
+                        </div>
+                    <?php endif; ?>
                 </div>
 
                 <div class="px-2">

@@ -54,7 +54,7 @@ if (!empty($_FILES['photo']['tmp_name'])) {
     $photoPath = $uploadDir . $fileName;
     if (!processImage($_FILES['photo']['tmp_name'], $photoPath)) {
         $_SESSION['error'] = 'Failed to process image';
-        header("Location: index.php"); exit;
+        header("Location: dashboard.php"); exit;
     }
 }
 

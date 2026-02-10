@@ -88,6 +88,13 @@ body {
 }
 .glass { background: rgba(255,255,255,0.05); backdrop-filter: blur(10px); }
 .input-glass { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color:white; }
+@keyframes register-logo {
+    from { opacity: 0; transform: scale(0.8); }
+    to { opacity: 1; transform: scale(1); }
+}
+.animate-register-logo {
+    animation: register-logo 1s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
 </style>
 </head>
 
@@ -96,7 +103,17 @@ body {
 <div class="w-full max-w-md p-6">
 <div class="glass rounded-3xl p-8 shadow-xl">
 
-<h2 class="text-3xl font-bold text-white text-center mb-6">Create Account</h2>
+<div class="flex flex-col items-center mb-8 animate-register-logo">
+    <div class="w-24 h-24 flex items-center justify-center transition-transform duration-300 hover:scale-110 cursor-pointer">
+    <img 
+        src="assets/images/trishul-logo.png"
+        alt="Trishul Logo"
+        class="w-24 h-24 object-contain"
+    >
+</div>
+
+    <h2 class="text-3xl font-bold text-white text-center italic mt-4">Create Account</h2>
+</div>
 
 <?php if ($error): ?>
 <div class="bg-red-500/10 border border-red-500 text-red-400 p-4 rounded-xl mb-4 text-center">

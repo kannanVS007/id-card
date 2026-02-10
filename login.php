@@ -11,6 +11,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     if ($username === '' || $password === '') {
         $error = 'All fields are required';
+    } elseif (!isDatabaseConnected()) {
+        $error = 'System maintenance: Database connection failed. Please ensure your database is running and installed.';
     } else {
 
         $stmt = $pdo->prepare("SELECT * FROM users WHERE username = ? LIMIT 1");
@@ -30,7 +32,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 // ✅ PREMIUM ACCESS FIX (ADMIN AUTO PREMIUM)
                 $_SESSION['is_premium'] = ($user['role'] === 'admin');
 
-                header('Location: index.php');
+                header('Location: dashboard.php');
                 exit;
             }
 
@@ -59,6 +61,13 @@ body {
     background: rgba(255,255,255,0.06);
     backdrop-filter: blur(12px);
 }
+@keyframes login-logo {
+    from { opacity: 0; transform: translateY(-10px) scale(0.9); }
+    to { opacity: 1; transform: translateY(0) scale(1); }
+}
+.animate-login-logo {
+    animation: login-logo 0.8s ease-out forwards;
+}
 </style>
 </head>
 
@@ -67,9 +76,19 @@ body {
 <div class="w-full max-w-md p-6">
 <div class="glass rounded-2xl p-8 shadow-xl">
 
-<h2 class="text-3xl font-bold text-white text-center mb-6">
-<?= PROJECT_NAME ?>
-</h2>
+<div class="flex flex-col items-center mb-8 animate-login-logo">
+    <div class="w-24 h-24 flex items-center justify-center transition-transform duration-300 hover:scale-110 cursor-pointer">
+    <img 
+        src="assets/images/trishul-logo.png"
+        alt="Trishul Logo"
+        class="w-24 h-24 object-contain"
+    >
+</div>
+
+    <h2 class="text-3xl font-bold text-white text-center italic mt-4">
+        <?= PROJECT_NAME ?>
+    </h2>
+</div>
 
 <?php if ($error): ?>
 <div class="bg-red-500/10 border border-red-500 text-red-400 p-3 rounded-xl mb-4 text-center">

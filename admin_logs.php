@@ -165,7 +165,7 @@ $bulk_count = count(array_filter($logs, fn($l) => $l['mode'] === 'bulk'));
             <a href="admin_dashboard.php" class="block p-3 hover:bg-slate-100 rounded-xl transition">📊 Dashboard</a>
             <a href="admin_users.php" class="block p-3 hover:bg-slate-100 rounded-xl transition">👥 Users</a>
             <a href="admin_logs.php" class="block p-3 bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-xl font-semibold">📋 Logs</a>
-            <a href="index.php" class="block p-3 hover:bg-slate-100 rounded-xl transition">🏠 Main System</a>
+            <a href="dashboard.php" class="block p-3 hover:bg-slate-100 rounded-xl transition">🏠 Main System</a>
             <a href="logout.php" class="block p-3 text-red-600 hover:bg-red-50 rounded-xl transition">🚪 Logout</a>
         </nav>
     </div>
@@ -192,7 +192,7 @@ $bulk_count = count(array_filter($logs, fn($l) => $l['mode'] === 'bulk'));
                         <span class="text-2xl">📋</span>
                         <span class="font-semibold text-white">Generation Logs</span>
                     </a>
-                    <a href="index.php" class="flex items-center gap-3 p-3 hover:bg-slate-50 rounded-xl transition group">
+                    <a href="dashboard.php" class="flex items-center gap-3 p-3 hover:bg-slate-50 rounded-xl transition group">
                         <span class="text-2xl">🏠</span>
                         <span class="font-medium text-slate-700 group-hover:text-slate-900">Main System</span>
                     </a>

@@ -2,7 +2,7 @@
 require_once 'auth_check.php'; 
 
 if (!isset($_SESSION['is_premium']) || !$_SESSION['is_premium']) {
-    header("Location: index.php?error=premium_required");
+    header("Location: dashboard.php?error=premium_required");
     exit;
 }
 
@@ -41,6 +41,13 @@ try {
             -webkit-text-fill-color: transparent;
         }
         .btn-premium { background: linear-gradient(135deg, #ec4899 0%, #8b5cf6 100%); }
+        @keyframes logo-load {
+            from { opacity: 0; transform: scale(0.9); }
+            to { opacity: 1; transform: scale(1); }
+        }
+        .animate-logo-load {
+            animation: logo-load 0.7s ease-out forwards;
+        }
     </style>
 </head>
 <body class="pb-12">
@@ -48,14 +55,21 @@ try {
     <nav class="sticky top-0 z-50 px-6 py-4 bg-white/80 backdrop-blur-md border-b border-pink-100 shadow-sm">
         <div class="max-w-7xl mx-auto flex justify-between items-center">
             <div class="flex items-center gap-3">
-                <div class="w-10 h-10 btn-premium rounded-xl flex items-center justify-center text-white font-bold">P</div>
+                <div class="w-24 h-24 flex items-center justify-center transition-transform duration-300 hover:scale-110 cursor-pointer">
+    <img 
+        src="assets/images/trishul-logo.png"
+        alt="Trishul Logo"
+        class="w-24 h-24 object-contain"
+    >
+</div>
+
                 <div>
                     <h1 class="text-xl font-black text-gray-800">Premium Designer</h1>
                     <p class="text-[10px] text-pink-500 font-bold uppercase tracking-widest">Advanced Layout Mode</p>
                 </div>
             </div>
             <div class="flex items-center gap-4">
-                <a href="index.php" class="text-xs font-bold text-gray-500 hover:text-pink-600">Standard Mode</a>
+                <a href="dashboard.php" class="text-xs font-bold text-gray-500 hover:text-pink-600">Standard Mode</a>
                 <a href="designer.php" class="text-xs font-bold btn-premium text-white px-4 py-2 rounded-lg shadow-lg">Design Editor</a>
                 <a href="logout.php" class="text-xs font-bold text-red-500">Logout</a>
             </div>

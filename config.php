@@ -23,6 +23,15 @@ try {
 } catch (PDOException $e) {
     // Prevent fatal error if DB is temporarily unavailable
     $pdo = null;
+    $db_connection_error = $e->getMessage();
+}
+
+/**
+ * Check if the database is currently connected
+ */
+function isDatabaseConnected() {
+    global $pdo;
+    return $pdo !== null;
 }
 
 // ===============================
@@ -36,7 +45,7 @@ if (session_status() === PHP_SESSION_NONE) {
 // GLOBAL SETTINGS
 // ===============================
 define('PROJECT_NAME', 'ID Card Generator');
-define('ADMIN_EMAIL', 'vskannan4153@gmail.com');
+define('ADMIN_EMAIL', 'trishultrades@gmail.com');
 
 // Auto approval logic
 define('TRUSTED_DOMAINS', ['school.edu', 'institutional.com', 'edu.in', 'ac.in']);

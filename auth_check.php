@@ -20,7 +20,7 @@ function isAdmin()
 function requireAdmin()
 {
     if (!isAdmin()) {
-        header('Location: index.php?error=unauthorized');
+        header('Location: dashboard.php?error=unauthorized');
         exit;
     }
 }

@@ -224,7 +224,7 @@ try {
     exit;
 } catch (Exception $e) {
     $_SESSION['error'] = $e->getMessage();
-    header("Location: index.php");
+    header("Location: dashboard.php");
     exit;
 }
 ?>

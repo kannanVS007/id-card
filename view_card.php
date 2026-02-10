@@ -5,7 +5,7 @@ require_once 'id_card_template.php';
 $student = $_SESSION['student'] ?? null;
 
 if (!$student) {
-    header("Location: index.php");
+    header("Location: dashboard.php");
     exit;
 }
 ?>
@@ -57,7 +57,7 @@ if (!$student) {
         <button onclick="window.print()" class="bg-teal-600 hover:bg-teal-700 text-white px-6 py-2 rounded-lg font-semibold transition">
           🖨️ Print Cards
         </button>
-        <a href="index.php" class="bg-gray-600 hover:bg-gray-700 text-white px-6 py-2 rounded-lg font-semibold transition inline-block">
+        <a href="dashboard.php" class="bg-gray-600 hover:bg-gray-700 text-white px-6 py-2 rounded-lg font-semibold transition inline-block">
           ← Back
         </a>
       </div>
