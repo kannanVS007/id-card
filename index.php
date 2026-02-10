@@ -206,7 +206,7 @@
                             </span>
                             <br>
                             <span class="inline-block mt-1">
-                                Call: <a href="tel:+919962552023" class="text-pink-600 hover:underline font-semibold">+91 9962552023</a> 
+                                Call: <a href="tel:+919962552023" class="text-pink-600 hover:underline font-semibold">+91 9962552023</a>
                             </span>
                         </p>
                     </div>
