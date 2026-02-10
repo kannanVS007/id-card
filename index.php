@@ -263,11 +263,13 @@ $design_id = $_SESSION['design_id'];
                                 Admin Panel
                             </a>
                         <?php endif; ?>
-                        <?php if (isset($_SESSION['is_premium']) && $_SESSION['is_premium']): ?>
-                            <a href="premium_dashboard.php" class="text-xs font-semibold bg-gradient-to-r from-teal-600 to-emerald-600 text-white px-4 py-2.5 rounded-xl shadow-lg shadow-teal-600/30 hover:shadow-teal-600/50 transition-all hover:scale-105">
-                                Premium Designer
-                            </a>
-                        <?php endif; ?>
+                        <!-- ✅ FIXED LOGIC (ADMIN OR PREMIUM) -->
+            <?php if (isAdmin() || (!empty($_SESSION['is_premium']) && $_SESSION['is_premium'])): ?>
+                <a href="premium_dashboard.php"
+                   class="text-xs bg-teal-600 text-white px-4 py-2 rounded-xl">
+                    Premium Designer
+                </a>
+            <?php endif; ?>
                         <a href="design_showcase.php" class="text-xs font-semibold bg-white/10 hover:bg-white/20 text-white px-4 py-2.5 rounded-xl border border-white/10 hover:border-white/20 transition-all backdrop-blur-sm">
                             Change Design
                         </a>
