@@ -2,7 +2,7 @@
 // ===============================
 // DATABASE CONFIGURATION
 // ===============================
-define('DB_HOST', 'localhost');
+define('DB_HOST', '127.0.0.1');
 define('DB_NAME', 'id_card_db');
 define('DB_USER', 'root');
 define('DB_PASS', '');
@@ -24,6 +24,7 @@ try {
     // Prevent fatal error if DB is temporarily unavailable
     $pdo = null;
     $db_connection_error = $e->getMessage();
+    // die("DB Error: " . $db_connection_error);
 }
 
 /**
