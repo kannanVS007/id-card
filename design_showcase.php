@@ -683,7 +683,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['student_name'])) {
                 <div class="absolute bottom-0 left-0 right-0 
               bg-gradient-to-b from-green-300 via-green-400 to-green-500 
                 pb-2" style="height: 150px;">
-                        <div class="school-building mt-2 mx-2 h-[67px] rounded-lg overflow-hidden shadow-md bg-center bg-contain w-auto" style="background-image: url('assets/images/4.png');"></div>
+                        <div class="school-building mt-2 mx-2 h-[67px] rounded-lg overflow-hidden bg-center bg-contain w-auto" style="background-image: url('assets/images/4.png');"></div>
                         <div class="text-center px-2 mt-1">
                              <h2 class="text-sm font-bold text-red-800 mb-0.5" style="text-shadow: 1px 1px 0px #fff, -1px -1px 0px #fff, 1px -1px 0px #fff, -1px 1px 0px #fff;">EDUVISHWAS</h2>
                              <p class="text-purple-800 font-bold text-[7px] mb-1">MONTESSORI PVT. LTD</p>
@@ -768,8 +768,9 @@ bg-gradient-to-b from-red-100 via-red-200 to-red-300">
                             <p class="text-gray-700 text-[6px]"><?= nl2br($address) ?></p>
                         </div>
                     </div>
+                    
                     <div class="absolute bottom-0 left-0 right-0 bg-gradient-to-b from-red-300 via-red-400 to-red-500 pb-2" style="height: 150px;">
-                        <div class="school-building mt-2 mx-2 h-[67px] rounded-lg overflow-hidden shadow-md bg-center bg-contain" style="background-image: url('assets/images/3.png');"></div>
+                        <div class="school-building mt-2 mx-2 ml-5 h-[67px] rounded-lg overflow-hidden  bg-center bg-cover" style="background-image: url('assets/images/9.png');"></div>
                         <div class="text-center px-2 mt-1">
                              <h2 class="text-sm font-bold text-red-800 mb-0.5" style="text-shadow: 1px 1px 0px #fff, -1px -1px 0px #fff, 1px -1px 0px #fff, -1px 1px 0px #fff;">EDUVISHWAS</h2>
                              <p class="text-purple-800 font-bold text-[7px] mb-1">MONTESSORI PVT. LTD</p>
